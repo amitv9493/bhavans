@@ -6,12 +6,21 @@ from django.utils.translation import gettext_lazy as _
 
 class Registration(models.Model):
     class ChoseEvent(models.TextChoices):
-        option1 = 1, "Life Time Membership INR 2000"
-        option2 = 2, "Ex Bhavanites Reunion INR 7000"
-        option3 = 3, "Guest Attending Reunion INR 5000"
-        option4 = 4, "Guest Attending 1st Day Full Fuction INR 3500"
-        option5 = 5, "Guest Attending 2nd Day Fuction INR 1500"
-        option6 = 6, "Guest Attending only Gala Dinner INR 2000"
+        OPTION1 = "lifetime_membership", "Life Time Membership (INR 2000)"
+        OPTION2 = "ex_bhavanites_reunion", "Ex Bhavanites Reunion (INR 7000)"
+        OPTION3 = "guest_attending_reunion", "Guest Attending Reunion (INR 5000)"
+        OPTION4 = (
+            "guest_attending_1st_day",
+            "Guest Attending 1st Day Full Function (INR 3500)",
+        )
+        OPTION5 = (
+            "guest_attending_2nd_day",
+            "Guest Attending 2nd Day Function (INR 1500)",
+        )
+        OPTION6 = (
+            "guest_attending_gala_dinner",
+            "Guest Attending only Gala Dinner (INR 2000)",
+        )
 
     class ProfessionChoice(models.TextChoices):
         option1 = "Businessman", "Businessman"
@@ -42,7 +51,7 @@ class Registration(models.Model):
         verbose_name="Members Attending The Event",
     )
 
-    event = models.CharField(max_length=1, choices=ChoseEvent.choices)
+    event = models.CharField(max_length=50, choices=ChoseEvent.choices)
     attendees_names = models.CharField(max_length=255)
     payment_date = models.DateField()
     payment_amount = models.PositiveIntegerField()
