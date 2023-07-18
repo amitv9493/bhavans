@@ -1,5 +1,6 @@
 from .base import *
 from decouple import config
+import os
 
 DATABASES = {
     "default": {
@@ -30,3 +31,12 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = config("EMAIL_PORT")
 EMAIL_USE_TLS = True
+
+
+STATIC_URL = "/baa/static/"
+STATIC_ROOT = "/home/gocrtjki/public_html/baa/static"
+STATICFILES_DIRS = [BASE_DIR / "static", os.path.join(BASE_DIR, "front", "static")]
+
+MEDIA_ROOT = "/home/gocrtjki/public_html/baa/media/"
+# MEDIA_ROOT = '/home/gocrtjki/baa/baa'
+MEDIA_URL = "/baa/media/"
