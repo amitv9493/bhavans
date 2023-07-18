@@ -1,3 +1,26 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Registration
+
+
+@admin.register(Registration)
+class RegistrationAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "address",
+        "email",
+        "mobile",
+        "passing_school",
+        "attend_reunion",
+        "members_attending_event",
+        "event",
+        "attendees_names",
+        "payment_date",
+        "payment_amount",
+        "payment_transaction_id",
+        "shirt_size",
+        "firm_name",
+    )
+    list_filter = ("attend_reunion", "payment_date")
+    search_fields = ("name",)
