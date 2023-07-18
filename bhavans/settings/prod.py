@@ -21,13 +21,9 @@ DEBUG = False
 CORS_ALLOW_ORIGIN_ALL = True
 CORS_ALLOW_ALL_ORIGINS = True
 
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# EMAIL_BACKEND = "mailer.backend.DbBackend"IL_PORT')
-EMAIL_USE_TLS = True
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# EMAIL_BACKEND = "mailer.backend.DbBackend"
+
 
 EMAIL_HOST = config("EMAIL_HOST")
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
