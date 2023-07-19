@@ -10,7 +10,7 @@ class RegistrationModelViewSet(ModelViewSet):
 
 
 def email(request):
-    return render(request, "registration/index.html", context={})
+    return render(request, "registration/email.html", context={})
 
 
 def front(request):
