@@ -14,6 +14,10 @@ class RegistrationModelViewSet(ModelViewSet):
     def dispatch(self, *args, **kwargs):
         return super(RegistrationModelViewSet, self).dispatch(*args, **kwargs)
 
+    @method_decorator(csrf_exempt)
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
 
 def email(request):
     return render(request, "registration/email.html", context={})
