@@ -34,7 +34,7 @@ EMAIL_USE_TLS = True
 STATIC_URL = "/baa/static/"
 STATIC_ROOT = "/home/gocrtjki/public_html/baa/static"
 STATICFILES_DIRS = [
-    os.path.join(REAL_BASE_DIR, "front"),
+    os.path.join(REAL_BASE_DIR, "front", "static"),
     os.path.join(REAL_BASE_DIR, "static"),
 ]
 

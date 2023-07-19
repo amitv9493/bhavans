@@ -48,7 +48,7 @@ ROOT_URLCONF = "bhavans.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ["templates"],
+        "DIRS": ["templates", os.path.join(REAL_BASE_DIR, "front")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
