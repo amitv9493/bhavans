@@ -10,7 +10,9 @@ DATABASES = {
     }
 }
 
-INSTALLED_APPS += ["django_extensions"]
+INSTALLED_APPS += [
+    "django_extensions",
+]
 
 
 # REST_FRAMEWORK = {
@@ -20,15 +22,6 @@ INSTALLED_APPS += ["django_extensions"]
 
 # EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 # EMAIL_FILE_PATH = os.path.join(BASE_DIR, "tmp", "emails")
-
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# EMAIL_BACKEND = "mailer.backend.DbBackend"
-
-# EMAIL_HOST = config('EMAIL_HOST')
-# EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-# EMAIL_PORT = config('EMAIL_PORT')
-# EMAIL_USE_TLS = True
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -45,3 +38,11 @@ EMAIL_HOST_USER = "baavadodara251@gmail.com"
 EMAIL_HOST_PASSWORD = "exgkzdmlzuftgqcz"
 EMAIL_PORT = 587
 EMAIL_POST_SSL = 465
+
+
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [os.path.join(REAL_BASE_DIR, "static")]
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

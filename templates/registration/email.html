@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link href="./main.css" rel="stylesheet" />
+
+    <title>Reciept</title>
+    <style>
+      .textSize {
+        font-size: 22px;
+        margin-top: 20px;
+      }
+
+      .marginAdd {
+        margin-bottom: 0px;
+        font-size: 16px;
+      }
+
+      .addressMar {
+        margin: 0px;
+      }
+
+      .headerCenter {
+        text-align: center;
+        margin-right: 35px;
+      }
+
+      .smallText {
+        font-size: 14px;
+        padding: 2px;
+      }
+
+      .red {
+        color: red;
+        font-weight: 700;
+      }
+
+      .inputBor {
+        border: 1px solid red;
+        width: 220px;
+        height: 50px;
+      }
+
+      .forText {
+        font-size: 15px;
+      }
+
+      .marginAbove {
+        margin-top: 50px;
+      }
+
+      .logo {
+        width: 170px;
+        height: 170px;
+        align-items: center;
+      }
+
+      .centerDiv {
+        display: flex;
+        justify-content: center;
+      }
+
+      .rsText {
+        font-size: 30px;
+        color: gray;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="col-md-12">
+        <div class="text-center">
+          <h2 class="headerCenter">Reciept</h2>
+          <a class="navbar-brand" href="/">
+            <img src="https://i.imgur.com/kEPiub3.jpg" class="logo" />
+          </a>
+          <p class="smallText">Bhavans Alumni Association Vadodara</p>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-md-4">
+          <div class="smallText">
+            <p class="marginAdd">Request Number :-</p>
+            <p class="marginAdd">Student Id :-</p>
+            <p class="marginAdd">Email :- {{email}}</p>
+          </div>
+        </div>
+        <div class="col-md-4 offset-md-4">
+          <p class="marginAdd smallText">Date :-</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 offset-md-1">
+          <div class="textSize">
+            <p>Purpose :-</p>
+            <p>Received With Thanks From :-</p>
+            <p>The Sum of Rupees :- {{amt}}</p>
+            <p>By DD / Cheque No:-</p>
+          </div>
+        </div>
+        <div class="col-md-3 offset-md-3">
+          <div class="textSize">
+            <p>Payment Type :-</p>
+            <p>Cheque Dated :-</p>
+          </div>
+        </div>
+      </div>
+      <div class="row marginAbove">
+        <div class="col-md-12 offset-md-1">
+          <div style="display: flex; justify-content: flex-start">
+            <div>
+              <span class="rsText">Rs. </span>
+              <div
+                style="display: inline-block; vertical-align: middle"
+                class="inputBor"
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: flex-start;
+                    padding: 20px;
+                    align-items: center;
+                    height: 100%;
+                  "
+                >
+                  {{amt}}
+                </div>
+              </div>
+              <p class="smallText red">NON REFUNDABLE</p>
+
+              <p class="smallText" style="font-size: 12px">
+                1 ) THIS IS A SYSTEM GENERATED RECEIPT AND MAY NOT BEAR SEAL &
+                SIGNATURE. 2 ) ALL PAYMENTS ARE SUBJECT TO REALISATION
+              </p>
+            </div>
+            <p class="forText" style="text-align: right">
+              For Bhavans Alumni Association Vadodara
+            </p>
+          </div>
+        </div>
+        <div class="col-md-12"></div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+          <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+          -->
+  </body>
+</html>

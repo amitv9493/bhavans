@@ -1,0 +1,47 @@
+.textSize{
+font-size: 22px;
+margin-top: 20px;
+}
+.marginAdd{
+    margin-bottom: 0px;
+}
+.addressMar{
+    margin: 0px;
+}
+.headerCenter{
+    text-align: center;
+    margin-right: 35px;
+}
+.smallText{
+    font-size: 12px;
+    padding: 2px;
+}
+.red{
+color: red;
+font-weight: 700;
+}
+.inputBor{
+    border: 1px solid red;
+    width: 220px;
+    height: 50px;
+}
+.forText{
+    font-size: 15px;
+}
+.marginAbove{
+    margin-top: 50px;
+}
+.logo{
+    width: 170px;
+    height: 170px;
+    align-items: center;
+
+}
+.centerDiv{
+    display: flex;
+    justify-content: center;
+}
+.rsText{
+    font-size: 30px;
+    color: gray;
+}

@@ -5,6 +5,7 @@ from .models import Registration
 
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):
+    date_hierarchy = "date_created"
     list_display = (
         "id",
         "name",
@@ -21,6 +22,7 @@ class RegistrationAdmin(admin.ModelAdmin):
         "payment_transaction_id",
         "shirt_size",
         "firm_name",
+        "date_created",
     )
     list_filter = ("attend_reunion", "payment_date")
     search_fields = ("name",)
