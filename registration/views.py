@@ -2,11 +2,17 @@ from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from registration.models import *
 from .serializers import RegistrationSerializer
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 
 class RegistrationModelViewSet(ModelViewSet):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(RegistrationModelViewSet, self).dispatch(*args, **kwargs)
 
 
 def email(request):
