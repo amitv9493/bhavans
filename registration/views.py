@@ -15,4 +15,4 @@ def email(request):
 
 def front(request):
     context = {}
-    return render(request, "front/index.html", context=context)
+    return render(request, "index.html", context=context)
