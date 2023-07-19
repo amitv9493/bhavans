@@ -7,8 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 class RegistrationModelViewSet(ModelViewSet):
-    permission_classes = None
-    authentication_classes = None
+    permission_classes = []
+    authentication_classes = []
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
 
