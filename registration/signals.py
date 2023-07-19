@@ -3,11 +3,13 @@ from django.dispatch import receiver
 from django.core.mail import EmailMultiAlternatives
 from .models import Registration
 from django.conf import settings
-from django.template.loader import get_template, render_to_string
+from django.template.loader import render_to_string
 from django.conf import settings
-
+from django.db import transaction
 from io import BytesIO
 import xhtml2pdf.pisa as pisa
+
+from django.core.exceptions import ValidationError
 
 
 @receiver(post_save, sender=Registration)
@@ -45,5 +47,9 @@ def send_email_on_save(sender, instance, created, **kwargs):
 
         email.attach_alternative(html, "text/html")
         email.attach(filename, pdf, "application/pdf")
-
-        email.send(fail_silently=False)
+        try:
+            with transaction.atomic():
+                email.send(fail_silently=False)
+                instance.save()
+        except Exception as e:
+            raise ValidationError("Error sending email. Please try again later.")
