@@ -26,6 +26,7 @@ def send_email_on_save(sender, instance, created, **kwargs):
             "email": instance.email,
             "transactionID": instance.payment_transaction_id,
             "event": instance.event,
+            "date": instance.date_created,
         }
 
         html = render_to_string("registration/email.html", context=context)
