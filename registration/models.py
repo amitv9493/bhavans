@@ -1,3 +1,4 @@
+from typing import Iterable, Optional
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -44,6 +45,11 @@ class Registration(models.Model):
     address = models.TextField()
     email = models.EmailField(max_length=254)
     mobile = models.CharField(max_length=10)
+    profession = models.CharField(
+        max_length=50,
+        choices=ProfessionChoice.choices,
+        default=ProfessionChoice.option6,
+    )
     passing_school = models.PositiveSmallIntegerField(
         verbose_name="Year of Passing School"
     )

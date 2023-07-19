@@ -35,7 +35,7 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "baavadodara251@gmail.com"
-EMAIL_HOST_PASSWORD = "exgkzdmlzuftgqcz"
+EMAIL_HOST_PASSWORD = "exgkzdmlzuftgqcz111"
 EMAIL_PORT = 587
 EMAIL_POST_SSL = 465
 
