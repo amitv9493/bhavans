@@ -11,3 +11,8 @@ class RegistrationModelViewSet(ModelViewSet):
 
 def email(request):
     return render(request, "registration/index.html", context={})
+
+
+def front(request):
+    context = {}
+    return render(request, "front/index.html", context=context)
