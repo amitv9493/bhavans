@@ -33,7 +33,7 @@ EMAIL_USE_TLS = True
 
 STATIC_URL = "/baa/static/"
 STATIC_ROOT = "/home/gocrtjki/public_html/baa/static"
-STATICFILES_DIRS = [BASE_DIR / "static", os.path.join(BASE_DIR, "front", "static")]
+STATICFILES_DIRS = [BASE_DIR / "static", os.path.join(REAL_BASE_DIR, "static")]
 
 MEDIA_ROOT = "/home/gocrtjki/public_html/baa/media/"
 # MEDIA_ROOT = '/home/gocrtjki/baa/baa'
