@@ -45,7 +45,7 @@ def send_email_on_save(sender, instance, action, **kwargs):
             result,
         )
         pdf = result.getvalue()
-        filename = "receipt" + context["transactionID"] + ".pdf"
+        filename = "receipt"+".pdf"
 
         email = EmailMultiAlternatives(
             email_subject,

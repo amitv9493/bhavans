@@ -65,7 +65,7 @@ class Registration(models.Model):
         null=True, blank=True
     )
 
-    event = models.ManyToManyField(Event, related_name="registration")
+    event = models.ManyToManyField(Event, related_name="registration", blank=True)
     attendees_names = models.CharField(max_length=255, null=True, blank=True)
     payment_date = models.DateField(null=True, blank=True)
     payment_amount = models.PositiveIntegerField()

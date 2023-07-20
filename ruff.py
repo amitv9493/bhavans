@@ -14,9 +14,16 @@
         
 
 # print(get_token('fly', 'anant@123'))
-import pickle
+# import pickle
 
-with open("fly.pkl", 'rb') as file:
-    name = pickle.load(file)
+# with open("fly.pkl", 'rb') as file:
+#     name = pickle.load(file)
 
-print((name['token']['access']))
+# print((name['token']['access']))
+import ast
+
+x = ['[1,2,3]']
+converted_list = ast.literal_eval(x[0])
+
+
+x = ['[1,2,3]']
