@@ -4,13 +4,15 @@ from registration.models import *
 from .serializers import RegistrationSerializer
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class RegistrationModelViewSet(ModelViewSet):
     permission_classes = []
     authentication_classes = []
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
+    
+    parser_classes = [MultiPartParser, FormParser]
 
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
