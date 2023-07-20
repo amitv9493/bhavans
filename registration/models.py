@@ -65,7 +65,7 @@ class Registration(models.Model):
         null=True, blank=True
     )
 
-    event = models.ManyToManyField(Event)
+    event = models.ManyToManyField(Event, related_name="registration")
     attendees_names = models.CharField(max_length=255, null=True, blank=True)
     payment_date = models.DateField(null=True, blank=True)
     payment_amount = models.PositiveIntegerField()
@@ -84,3 +84,5 @@ class Registration(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
