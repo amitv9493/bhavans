@@ -5,7 +5,11 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
-
+class Event(models.Model):
+    event_name = models.CharField(max_length=50)
+    
+    def __str__(self) -> str:
+        return self.event_name
 class Registration(models.Model):
     class ChoseEvent(models.TextChoices):
         OPTION1 = "lifetime_membership", "Life Time Membership (INR 2000)"
@@ -41,36 +45,42 @@ class Registration(models.Model):
         option6 = "2XL", "2XL"
         option7 = "3XL", "3XL"
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50,null=True, blank=True)
     address = models.TextField()
-    email = models.EmailField(max_length=254)
-    mobile = models.CharField(max_length=10)
+    email = models.EmailField(max_length=254,null=True, blank=True)
+    mobile = models.CharField(max_length=20,null=True, blank=True)
     profession = models.CharField(
         max_length=50,
         choices=ProfessionChoice.choices,
         default=ProfessionChoice.option6,
+        null=True, blank=True
     )
     passing_school = models.PositiveSmallIntegerField(
-        verbose_name="Year of Passing School"
+        verbose_name="Year of Passing School",
+        null=True, blank=True
     )
-    attend_reunion = models.BooleanField()
+    attend_reunion = models.BooleanField(null=True, blank=True)
     members_attending_event = models.PositiveSmallIntegerField(
         verbose_name="Members Attending The Event",
+        null=True, blank=True
     )
 
-    event = models.CharField(max_length=50, choices=ChoseEvent.choices)
-    attendees_names = models.CharField(max_length=255)
-    payment_date = models.DateField()
+    event = models.ManyToManyField(Event)
+    attendees_names = models.CharField(max_length=255, null=True, blank=True)
+    payment_date = models.DateField(null=True, blank=True)
     payment_amount = models.PositiveIntegerField()
-    payment_transaction_id = models.CharField(max_length=100)
+    payment_transaction_id = models.CharField(max_length=100, null=True, blank=True)
     shirt_size = models.CharField(
-        ("T-shirt Size"), max_length=50, choices=ShirtSize.choices
+        ("T-shirt Size"), max_length=50, choices=ShirtSize.choices,
+        null=True, blank=True
     )
 
     firm_name = models.CharField(
         _("Name of Firm if Any"), max_length=100, null=True, blank=True
     )
     date_created = models.DateTimeField(auto_now_add=True)
+    
+    file = models.FileField(upload_to='media', null=True, blank=True)
 
     def __str__(self) -> str:
         return self.name

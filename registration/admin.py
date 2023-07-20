@@ -1,7 +1,11 @@
 from django.contrib import admin
 
-from .models import Registration
+from .models import Registration, Event
 
+
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('id', 'event_name')
 
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):
@@ -15,7 +19,7 @@ class RegistrationAdmin(admin.ModelAdmin):
         "passing_school",
         "attend_reunion",
         "members_attending_event",
-        "event",
+        # "event",
         "attendees_names",
         "payment_date",
         "payment_amount",
