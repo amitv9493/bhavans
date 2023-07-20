@@ -61,9 +61,21 @@ class RegistrationCreateView(APIView):
     parser_classes = [MultiPartParser, FormParser]
     
     def post(self, request):
-        # Deserialize the data from the request body
-        event = request.data.pop("event")
-        event_ids = ast.literal_eval(event[0])
+        
+        request.data._mutable = True
+            # def create(self, request, *args, **kwargs):
+    #     request.data["content_type"] = 18
+        try:
+            
+            event = request.data.pop("event")
+        
+        except KeyError:
+            event = []
+        
+        
+        print(event)
+        if len(event) != 0:
+            event_ids = ast.literal_eval(event[0])
         
         print(event_ids)
         
@@ -71,17 +83,16 @@ class RegistrationCreateView(APIView):
 
         # Validate the data
         if serializer.is_valid():
-            # Save the new user registration to the database
             serializer.save()
             instance = serializer.instance
             
-            
-            events_to_add = Event.objects.filter(id__in =event_ids)
-            
+            if len(event_ids) != 0:
+                events_to_add = Event.objects.filter(id__in =event_ids)
                 
-            instance.event.set(events_to_add)
-            
-            instance.save()
+                    
+                instance.event.set(events_to_add)
+                
+                instance.save()
             
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
