@@ -26,6 +26,7 @@ def send_email_on_save(sender, instance, action, **kwargs):
         )
         
         events = list(Event.objects.filter(registration= instance.id).values_list("event_name", flat=True))
+        events = ", ".join(x for x in events)
         # print(events)
         
         # print([i.event_name for i in instance.regis])
