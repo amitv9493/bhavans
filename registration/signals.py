@@ -51,7 +51,7 @@ def send_email_on_save(sender, instance, action, **kwargs):
             email_subject,
             "receipt generated. Plase find attached with this email",
             from_email,
-            [to],
+            [to, "Baavadodara@gmail.com"],
         )
 
         email.mixed_subtype = "related"
