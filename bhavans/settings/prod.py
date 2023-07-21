@@ -9,7 +9,7 @@ DATABASES = {
     }
 }
 
-DEBUG = False
+DEBUG = True
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [

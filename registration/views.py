@@ -9,15 +9,15 @@ import ast
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+
 class RegistrationModelViewSet(ModelViewSet):
     permission_classes = []
     authentication_classes = []
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
-    
-    parser_classes = [MultiPartParser, FormParser]
 
-    
+    parser_classes = [MultiPartParser, FormParser]
 
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
@@ -26,18 +26,17 @@ class RegistrationModelViewSet(ModelViewSet):
     @method_decorator(csrf_exempt)
     def create(self, request, *args, **kwargs):
         data = request.data.pop("event")
-        
+
         data = ast.literal_eval(data[0])
-        
+
         request.data["event"] = data
-        
-        
+
         serializer = self.get_serializer(data=request.data)
         # serializer.is_valid(raise_exception=True)
         # self.perform_create(serializer)
         # headers = self.get_success_headers(serializer.data)
         # return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        
+
         print(request.data)
         return super().create(request, *args, **kwargs)
 
@@ -51,50 +50,32 @@ def front(request):
     return render(request, "index.html", context=context)
 
 
-
 class RegistrationCreateView(APIView):
     permission_classes = []
     authentication_classes = []
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
-    
+
     parser_classes = [MultiPartParser, FormParser]
-    
+
     def post(self, request):
-        
-        request.data._mutable = True
-            # def create(self, request, *args, **kwargs):
-    #     request.data["content_type"] = 18
-        try:
-            
-            event = request.data.pop("event")
-        
-        except KeyError:
-            event = []
-        
-        
+        event = request.data.get("event", [])
         print(event)
-        if len(event) != 0:
-            event_ids = ast.literal_eval(event[0])
-        
-        print(event_ids)
-        
+        event_list = [int(i) for i in event if i.isdigit()] if event else []
+
+        print(event_list)
         serializer = self.serializer_class(data=request.data)
 
-        # Validate the data
         if serializer.is_valid():
             serializer.save()
             instance = serializer.instance
-            
-            if len(event_ids) != 0:
-                events_to_add = Event.objects.filter(id__in =event_ids)
-                
-                    
+
+            if len(event_list) > 0:
+                events_to_add = Event.objects.filter(id__in=event_list)
                 instance.event.set(events_to_add)
-                
+
                 instance.save()
-            
-            
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
