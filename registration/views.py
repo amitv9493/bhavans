@@ -9,6 +9,7 @@ import ast
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.db.models import Q
 
 
 class RegistrationModelViewSet(ModelViewSet):
@@ -65,7 +66,13 @@ class RegistrationCreateView(APIView):
 
         print(event_list)
         serializer = self.serializer_class(data=request.data)
-
+        transcation_ids = list(Registration.objects.exclude(Q(payment_transaction_id__isnull = True) | Q(payment_transaction_id =''))\
+            .values_list("payment_transaction_id", flat=True))
+        
+        if request.data.get("payment_transaction_id") in transcation_ids:
+            
+            return Response(data={"error":"Please enter the unique ID this one is already used"}, status=status.HTTP_400_BAD_REQUEST)
+            
         if serializer.is_valid():
             serializer.save()
             instance = serializer.instance
