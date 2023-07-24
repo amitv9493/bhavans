@@ -20,10 +20,8 @@
 #     name = pickle.load(file)
 
 # print((name['token']['access']))
-import ast
-
-x = ['[1,2,3]']
-converted_list = ast.literal_eval(x[0])
-
-
-x = ['[1,2,3]']
+import pickle
+import os
+print(os.access("fly.pkl", mode=1))
+    
+# os.remove()

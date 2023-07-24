@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from registration.models import *
-from .serializers import RegistrationSerializer
+from .serializers import *
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -86,3 +86,17 @@ class RegistrationCreateView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+import datetime
+class EventGETView(APIView):
+    
+    def get(self, request):
+        
+        current_date = datetime.date.today()
+        
+        data = Event.objects.exclude(event_registration_last_date__lt = current_date)
+        serializer = EventSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        

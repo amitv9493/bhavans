@@ -9,6 +9,7 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):
+    
     date_hierarchy = "date_created"
     list_display = (
         "id",

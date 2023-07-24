@@ -2,11 +2,14 @@ from typing import Iterable, Optional
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-
+import datetime
 # Create your models here.
 
 class Event(models.Model):
     event_name = models.CharField(max_length=50)
+    start_date = models.DateField(default=datetime.date.today)
+    end_date = models.DateField(default=datetime.date.today)
+    event_registration_last_date = models.DateField(default=datetime.date.today)
     
     def __str__(self) -> str:
         return self.event_name
@@ -81,7 +84,8 @@ class Registration(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     
     file = models.FileField(upload_to='media', null=True, blank=True)
-
+    
+    payment_status = models.BooleanField(default=False)
     # def __str__(self) -> str:
     #     return self.name
 
