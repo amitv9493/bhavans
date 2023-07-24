@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Registration, Event
+from .models import *
 
 
 @admin.register(Event)
@@ -31,3 +31,10 @@ class RegistrationAdmin(admin.ModelAdmin):
     )
     list_filter = ("attend_reunion", "payment_date")
     search_fields = ("name",)
+
+
+@admin.register(Guest)
+class GuestAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'event', 'registration')
+    list_filter = ('event', 'registration')
+    search_fields = ('name',)

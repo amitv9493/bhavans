@@ -5,9 +5,11 @@ from .serializers import *
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import MultiPartParser, FormParser
+import datetime
 import ast
 from rest_framework import status
 from rest_framework.views import APIView
+import json
 from rest_framework.response import Response
 from django.db.models import Q
 
@@ -33,6 +35,7 @@ class RegistrationModelViewSet(ModelViewSet):
         request.data["event"] = data
 
         serializer = self.get_serializer(data=request.data)
+        
         # serializer.is_valid(raise_exception=True)
         # self.perform_create(serializer)
         # headers = self.get_success_headers(serializer.data)
@@ -61,7 +64,7 @@ class RegistrationCreateView(APIView):
 
     def post(self, request):
         event = request.data.get("event", [])
-        print(event)
+        print(request.data)
         event_list = [int(i) for i in event if i.isdigit()] if event else []
 
         print(event_list)
@@ -76,19 +79,36 @@ class RegistrationCreateView(APIView):
         if serializer.is_valid():
             serializer.save()
             instance = serializer.instance
+            
+            
 
             if len(event_list) > 0:
                 events_to_add = Event.objects.filter(id__in=event_list)
                 instance.event.set(events_to_add)
 
                 instance.save()
-
+            
+            guests = request.data.get("guest",[])
+            if len(guests) >0:
+                guests_data = json.loads(guests)
+                
+                print(guests_data)
+                print(type(guests_data))
+                
+                for i in guests_data:
+                    i["registration"] = instance.id
+                
+                print(guests_data)
+                guest_serializer = GuestSerializer(data=guests_data, many=True)
+                if guest_serializer.is_valid(raise_exception=True):
+                    guest_serializer.save()
+                
+                
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-import datetime
 class EventGETView(APIView):
     
     def get(self, request):

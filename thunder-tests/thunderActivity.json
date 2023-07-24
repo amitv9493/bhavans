@@ -1,0 +1,34 @@
+[
+    {
+        "_id": "7c7dccde-28a5-4037-982a-10a1f6637223",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:8000/api/registration/create/",
+        "url": "localhost:8000/api/registration/create/",
+        "method": "POST",
+        "sortNum": 0,
+        "created": "2023-07-24T11:46:35.000Z",
+        "modified": "2023-07-24T11:52:35.925Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "formdata",
+            "raw": "",
+            "form": [
+                {
+                    "name": "address",
+                    "value": "34fsdf"
+                },
+                {
+                    "name": "payment_amount",
+                    "value": "1000"
+                },
+                {
+                    "name": "guest",
+                    "value": "[{\"event\":1, \"name\":\"Sunita\"}]"
+                }
+            ]
+        },
+        "tests": []
+    }
+]

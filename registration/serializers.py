@@ -1,7 +1,14 @@
 from rest_framework import serializers
-from registration.models import Registration, Event
+from registration.models import Registration, Event, Guest
 
 
+class GuestSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Guest
+        fields = "__all__"
+        # extra_kwargs = {"registration":{"read_only":True}}
+        
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event

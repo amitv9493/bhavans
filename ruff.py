@@ -25,3 +25,8 @@ import os
 print(os.access("fly.pkl", mode=1))
     
 # os.remove()
+
+data = [
+    {1:2},
+    {2:3},
+]
