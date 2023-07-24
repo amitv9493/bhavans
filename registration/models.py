@@ -10,6 +10,7 @@ class Event(models.Model):
     start_date = models.DateField(default=datetime.date.today)
     end_date = models.DateField(default=datetime.date.today)
     event_registration_last_date = models.DateField(default=datetime.date.today)
+    is_this_main = models.BooleanField(default=False)
     
     def __str__(self) -> str:
         return self.event_name
