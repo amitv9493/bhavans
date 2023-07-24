@@ -63,12 +63,6 @@ class RegistrationCreateView(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request):
-        event = request.data.get("event", [])
-        print(request.data)
-        event_list = [int(i) for i in event if i.isdigit()] if event else []
-
-        print(event_list)
-        serializer = self.serializer_class(data=request.data)
         transcation_ids = list(Registration.objects.exclude(Q(payment_transaction_id__isnull = True) | Q(payment_transaction_id =''))\
             .values_list("payment_transaction_id", flat=True))
         
@@ -76,13 +70,15 @@ class RegistrationCreateView(APIView):
             
             return Response(data={"error":"Please enter the unique ID this one is already used"}, status=status.HTTP_400_BAD_REQUEST)
             
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             instance = serializer.instance
             
+            event = request.data.get("event", [])
             
-
-            if len(event_list) > 0:
+            if len(event) > 0:
+                event_list = json.loads(event)
                 events_to_add = Event.objects.filter(id__in=event_list)
                 instance.event.set(events_to_add)
 
@@ -92,13 +88,9 @@ class RegistrationCreateView(APIView):
             if len(guests) >0:
                 guests_data = json.loads(guests)
                 
-                print(guests_data)
-                print(type(guests_data))
-                
                 for i in guests_data:
                     i["registration"] = instance.id
                 
-                print(guests_data)
                 guest_serializer = GuestSerializer(data=guests_data, many=True)
                 if guest_serializer.is_valid(raise_exception=True):
                     guest_serializer.save()

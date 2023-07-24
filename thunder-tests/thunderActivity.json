@@ -8,7 +8,7 @@
         "method": "POST",
         "sortNum": 0,
         "created": "2023-07-24T11:46:35.000Z",
-        "modified": "2023-07-24T11:52:35.925Z",
+        "modified": "2023-07-24T12:15:50.331Z",
         "headers": [],
         "params": [],
         "body": {
@@ -25,7 +25,16 @@
                 },
                 {
                     "name": "guest",
-                    "value": "[{\"event\":1, \"name\":\"Sunita\"}]"
+                    "value": ""
+                },
+                {
+                    "name": "event",
+                    "value": "[1,2,3]",
+                    "isDisabled": true
+                },
+                {
+                    "name": "name",
+                    "value": "Sam Altman"
                 }
             ]
         },
