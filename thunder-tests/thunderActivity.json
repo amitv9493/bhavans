@@ -39,5 +39,46 @@
             ]
         },
         "tests": []
+    },
+    {
+        "_id": "1e263ec6-329f-4abe-9dc0-1ae334030207",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:8000/api/registration/registration/",
+        "url": "localhost:8000/api/registration/registration/",
+        "method": "GET",
+        "sortNum": 0,
+        "created": "2023-07-25T12:22:39.369Z",
+        "modified": "2023-07-25T12:22:39.369Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "formdata",
+            "raw": "",
+            "form": [
+                {
+                    "name": "address",
+                    "value": "34fsdf"
+                },
+                {
+                    "name": "payment_amount",
+                    "value": "1000"
+                },
+                {
+                    "name": "guest",
+                    "value": ""
+                },
+                {
+                    "name": "event",
+                    "value": "[1,2,3]",
+                    "isDisabled": true
+                },
+                {
+                    "name": "name",
+                    "value": "Sam Altman"
+                }
+            ]
+        },
+        "tests": []
     }
 ]

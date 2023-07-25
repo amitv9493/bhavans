@@ -20,13 +20,16 @@
 #     name = pickle.load(file)
 
 # print((name['token']['access']))
-import pickle
-import os
-print(os.access("fly.pkl", mode=1))
+# import pickle
+# import os
+# print(os.access("fly.pkl", mode=1))
     
-# os.remove()
+# # os.remove()
 
-data = [
-    {1:2},
-    {2:3},
-]
+# data = [
+#     {1:2},
+#     {2:3},
+# ]
+
+
+# 

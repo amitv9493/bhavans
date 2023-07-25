@@ -12,11 +12,14 @@ from rest_framework.views import APIView
 import json
 from rest_framework.response import Response
 from django.db.models import Q
-
+from rest_framework.filters import OrderingFilter
 
 class RegistrationModelViewSet(ModelViewSet):
     permission_classes = []
     authentication_classes = []
+    filter_backends = [OrderingFilter]
+    
+    ordering= ['-date_created']
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
 
@@ -44,6 +47,12 @@ class RegistrationModelViewSet(ModelViewSet):
         print(request.data)
         return super().create(request, *args, **kwargs)
 
+    
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            print("I ran ")
+            return RegistrationGETSerializer
+        return super().get_serializer_class()
 
 def email(request):
     return render(request, "registration/email.html", context={})
