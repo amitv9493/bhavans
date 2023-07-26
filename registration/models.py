@@ -73,7 +73,7 @@ class Registration(models.Model):
     event = models.ManyToManyField(Event, related_name="registration", blank=True)
     attendees_names = models.CharField(max_length=255, null=True, blank=True)
     payment_date = models.DateField(null=True, blank=True)
-    payment_amount = models.PositiveIntegerField()
+    payment_amount = models.PositiveIntegerField(null=True, blank=True)
     payment_transaction_id = models.CharField(max_length=100, null=True, blank=True)
     shirt_size = models.CharField(
         ("T-shirt Size"), max_length=50, choices=ShirtSize.choices,
