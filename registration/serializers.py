@@ -24,6 +24,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class RegistrationGETSerializer(serializers.ModelSerializer):
     guest = GuestSerializer(many=True)
+    event = EventSerializer(many=True)
+    
     class Meta:
         model = Registration
         fields = "__all__"
