@@ -23,6 +23,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 
 class RegistrationGETSerializer(serializers.ModelSerializer):
+    edit_url = serializers.HyperlinkedIdentityField(view_name="register-detail")
     guest = GuestSerializer(many=True)
     event = EventSerializer(many=True)
     
@@ -36,6 +37,6 @@ class RegistrationGETSerializer(serializers.ModelSerializer):
         
         
         for guest in guest_data:
-            x, y = Guest.objects.get_or_create(**guest)
+            Guest.objects.get_or_create(**guest)
             
         return super().update(instance, validated_data)

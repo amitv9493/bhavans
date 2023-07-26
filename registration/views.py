@@ -31,18 +31,6 @@ class RegistrationModelViewSet(ModelViewSet):
     def dispatch(self, *args, **kwargs):
         return super(RegistrationModelViewSet, self).dispatch(*args, **kwargs)
 
-    @method_decorator(csrf_exempt)
-    def create(self, request, *args, **kwargs):
-        data = request.data.pop("event")
-
-        data = ast.literal_eval(data[0])
-
-        request.data["event"] = data
-
-        serializer = self.get_serializer(data=request.data)
-
-        return super().create(request, *args, **kwargs)
-
     def get_serializer_class(self):
         if self.request.method in ["GET", "PATCH"]:
             return RegistrationGETSerializer

@@ -332,24 +332,19 @@
         "colId": "history",
         "containerId": "",
         "name": "localhost:8000/api/registration/registration/29/",
-        "url": "localhost:8000/api/registration/registration/?search=ppritee20@gmail.com",
+        "url": "localhost:8000/api/registration/registration/?search=amitv9493@gmail.com",
         "method": "GET",
         "sortNum": 0,
         "created": "2023-07-25T12:29:27.456Z",
-        "modified": "2023-07-26T09:08:23.517Z",
+        "modified": "2023-07-26T09:27:17.782Z",
         "headers": [],
         "params": [
             {
                 "name": "search",
-                "value": "ppritee20@gmail.com",
+                "value": "amitv9493@gmail.com",
                 "isPath": false
             }
         ],
-        "body": {
-            "type": "json",
-            "raw": "{\n  \"guest\": [\n    {\n      \"id\": 5,\n      \"name\": \"Sam\",\n      \"event\": 1,\n      \"registration\": 29\n    },\n    {\n      \"name\": \"New\",\n      \"event\": 1,\n      \"registration\": 29\n    },\n    {\n      \"name\": \"chatgpt\",\n      \"event\": 1,\n      \"registration\": 29\n    }\n  ],\n  \"name\": \"Sam Altman\",\n  \"address\": \"34fsdf\",\n  \"email\": null,\n  \"mobile\": null,\n  \"profession\": \"Others\",\n  \"passing_school\": null,\n  \"attend_reunion\": false,\n  \"members_attending_event\": null,\n  \"attendees_names\": null,\n  \"payment_date\": null,\n  \"payment_amount\": 2000,\n  \"payment_transaction_id\": null,\n  \"shirt_size\": null,\n  \"firm_name\": null,\n  \"date_created\": \"2023-07-24T17:46:29.721895\",\n  \"file\": null,\n  \"payment_status\": false\n}",
-            "form": []
-        },
         "tests": []
     }
 ]
