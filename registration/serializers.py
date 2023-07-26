@@ -29,3 +29,13 @@ class RegistrationGETSerializer(serializers.ModelSerializer):
     class Meta:
         model = Registration
         fields = "__all__"
+        
+    
+    def update(self, instance, validated_data):
+        guest_data = validated_data.pop("guest")
+        
+        
+        for guest in guest_data:
+            x, y = Guest.objects.get_or_create(**guest)
+            
+        return super().update(instance, validated_data)
