@@ -332,16 +332,16 @@
         "colId": "history",
         "containerId": "",
         "name": "localhost:8000/api/registration/registration/29/",
-        "url": "localhost:8000/api/registration/registration/?search=amitv9493@gmail.com",
+        "url": "localhost:8000/api/registration/registration/?search=amitv949",
         "method": "GET",
         "sortNum": 0,
         "created": "2023-07-25T12:29:27.456Z",
-        "modified": "2023-07-26T09:27:17.782Z",
+        "modified": "2023-07-26T09:37:41.493Z",
         "headers": [],
         "params": [
             {
                 "name": "search",
-                "value": "amitv9493@gmail.com",
+                "value": "amitv949",
                 "isPath": false
             }
         ],

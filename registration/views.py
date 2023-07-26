@@ -19,7 +19,7 @@ class RegistrationModelViewSet(ModelViewSet):
     permission_classes = []
     authentication_classes = []
     filter_backends = [OrderingFilter, SearchFilter]
-    search_fields = ['mobile', 'email']
+    search_fields = ['=mobile', '=email']
 
     ordering = ["-date_created"]
     queryset = Registration.objects.all()
