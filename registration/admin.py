@@ -14,7 +14,6 @@ class RegistrationAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "name",
-        "address",
         "email",
         "mobile",
         "passing_school",

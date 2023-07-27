@@ -51,7 +51,6 @@ class Registration(models.Model):
         option7 = "3XL", "3XL"
 
     name = models.CharField(max_length=50,null=True, blank=True)
-    address = models.TextField()
     email = models.EmailField(max_length=254,null=True, blank=True)
     mobile = models.CharField(max_length=20,null=True, blank=True)
     profession = models.CharField(
