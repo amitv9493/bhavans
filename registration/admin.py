@@ -19,22 +19,22 @@ class RegistrationAdmin(admin.ModelAdmin):
         "mobile",
         "passing_school",
         "attend_reunion",
-        "members_attending_event",
         # "event",
-        "attendees_names",
-        "payment_date",
-        "payment_amount",
-        "payment_transaction_id",
         "shirt_size",
         "firm_name",
         "date_created",
     )
-    list_filter = ("attend_reunion", "payment_date")
+    list_filter = ("attend_reunion",)
     search_fields = ("name",)
 
 
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'event', 'registration')
+    list_display = ('id', 'name', 'registration')
     list_filter = ('event', 'registration')
     search_fields = ('name',)
+    
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    pass
+    

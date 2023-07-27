@@ -70,11 +70,6 @@ class Registration(models.Model):
         null=True, blank=True
     )
 
-    event = models.ManyToManyField(Event, related_name="registration", blank=True)
-    attendees_names = models.CharField(max_length=255, null=True, blank=True)
-    payment_date = models.DateField(null=True, blank=True)
-    payment_amount = models.PositiveIntegerField(null=True, blank=True)
-    payment_transaction_id = models.CharField(max_length=100, null=True, blank=True)
     shirt_size = models.CharField(
         ("T-shirt Size"), max_length=50, choices=ShirtSize.choices,
         null=True, blank=True
@@ -87,17 +82,25 @@ class Registration(models.Model):
     
     file = models.FileField(upload_to='media', null=True, blank=True)
     
-    payment_status = models.BooleanField(default=False)
     def __str__(self) -> str:
         return self.name if self.name else "NONE"
 
 
 class Guest(models.Model):
     name = models.CharField( max_length=255)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.ManyToManyField(Event) # manytomanyfield
     registration = models.ForeignKey(Registration, on_delete=models.CASCADE, related_name="guest")
     
     
     def __str__(self):
         return self.name
     
+# guest details 
+    
+class Payment(models.Model):
+    registration = models.ForeignKey(Registration, on_delete=models.CASCADE)
+    event = models.ManyToManyField(Event, null=True, blank=True)
+    razorpay_id = models.CharField(max_length=100)
+    payment_success = models.BooleanField()
+    payment_amt = models.PositiveIntegerField()
+    payment_date = models.DateTimeField(auto_now=True)
