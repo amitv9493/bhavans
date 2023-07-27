@@ -6,14 +6,17 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 import datetime
-import ast
+
+from rest_framework import status
 from rest_framework import status
 from rest_framework.views import APIView
-import json
-from rest_framework.response import Response
-from django.db.models import Q
-from rest_framework.filters import OrderingFilter, SearchFilter
 
+from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework import status
+from payment.main import RazorpayClient
+
+rz = RazorpayClient()
 
 class RegistrationModelViewSet(ModelViewSet):
     permission_classes = []
@@ -31,12 +34,31 @@ class RegistrationModelViewSet(ModelViewSet):
     def dispatch(self, *args, **kwargs):
         return super(RegistrationModelViewSet, self).dispatch(*args, **kwargs)
 
-    def get_serializer_class(self):
-        if self.request.method in ["GET", "PATCH"]:
-            return RegistrationGETSerializer
-        return super().get_serializer_class()
+    # def get_serializer_class(self):
+    #     if self.request.method in ["GET", "PATCH"]:
+    #         return RegistrationGETSerializer
+    #     return super().get_serializer_class()
 
-
+    def create(self, request, *args, **kwargs):
+        
+        
+        response = super().create(request, *args, **kwargs)
+        
+        if response.status_code == status.HTTP_201_CREATED:
+            registration_id = response.data.get("id")
+            order_response = rz.create_order(registration_id, 2000)
+            
+            res = {
+                "status_code":status.HTTP_201_CREATED,
+                "message":"Order Created",
+                "order_data":order_response,
+                "user_data":response.data,
+                
+            }
+            return Response(res, status=status.HTTP_201_CREATED)
+        
+        return super().create(request, *args, **kwargs)
+        
 def email(request):
     return render(request, "registration/email.html", context={})
 
@@ -46,55 +68,44 @@ def front(request):
     return render(request, "index.html", context=context)
 
 
-class RegistrationCreateView(APIView):
-    permission_classes = []
-    authentication_classes = []
-    queryset = Registration.objects.all()
-    serializer_class = RegistrationSerializer
+# class RegistrationCreateView(APIView):
+#     permission_classes = []
+#     authentication_classes = []
+#     queryset = Registration.objects.all()
+#     serializer_class = RegistrationSerializer
 
-    parser_classes = [MultiPartParser, FormParser]
+#     parser_classes = [MultiPartParser, FormParser]
 
-    def post(self, request):
-        transcation_ids = list(
-            Registration.objects.exclude(
-                Q(payment_transaction_id__isnull=True) | Q(payment_transaction_id="")
-            ).values_list("payment_transaction_id", flat=True)
-        )
+#     def post(self, request):
 
-        if request.data.get("payment_transaction_id") in transcation_ids:
-            return Response(
-                data={"error": "Please enter the unique ID this one is already used"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             instance = serializer.instance
 
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            instance = serializer.instance
+#             event = request.data.get("event", [])
 
-            event = request.data.get("event", [])
+#             if len(event) > 0:
+#                 event_list = json.loads(event)
+#                 events_to_add = Event.objects.filter(id__in=event_list)
+#                 instance.event.set(events_to_add)
 
-            if len(event) > 0:
-                event_list = json.loads(event)
-                events_to_add = Event.objects.filter(id__in=event_list)
-                instance.event.set(events_to_add)
+#                 instance.save()
 
-                instance.save()
+#             guests = request.data.get("guest", [])
+#             if len(guests) > 0:
+#                 guests_data = json.loads(guests)
 
-            guests = request.data.get("guest", [])
-            if len(guests) > 0:
-                guests_data = json.loads(guests)
+#                 for i in guests_data:
+#                     i["registration"] = instance.id
 
-                for i in guests_data:
-                    i["registration"] = instance.id
+#                 guest_serializer = GuestSerializer(data=guests_data, many=True)
+#                 if guest_serializer.is_valid(raise_exception=True):
+#                     guest_serializer.save()
 
-                guest_serializer = GuestSerializer(data=guests_data, many=True)
-                if guest_serializer.is_valid(raise_exception=True):
-                    guest_serializer.save()
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EventGETView(APIView):
@@ -113,3 +124,56 @@ class EventGETView(APIView):
             return Response("Not found", status=404)
 
         data = request.data.get("event")
+
+
+class PaymentView(APIView):
+    def post(self, request):
+        serializer = PaymentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            rz.verify_payment(
+                request.data.get("razorpay_payment_id"),
+                request.data.get("razorpay_order_id"),
+                request.data.get("razorpay_signature_id"),     
+            )
+            serializer.save()
+            response = {
+                'status_code':status.HTTP_201_CREATED,
+                'msg': "Transaction Successful",
+            }
+            
+            return Response(response, status=status.HTTP_201_CREATED)
+
+
+
+# # @api_view(["POST"])
+# def Payment(request, registration_id, event_id=[], final_price=0):
+    
+#     currency ="INR"
+#     notes = ""
+#     notes = {'order-type': "lifetime registration order from the website"}
+#     # event_id = request.query_params.getlist("event")
+#     # event = list(map(int,event_id))
+    
+#     # if len(event_id)>0:
+#     #     try:
+#     #         event = Event.objects.filter(id__in=event_id)
+#     #         print(event)
+#     #     except:
+#     #         pass
+        
+#     # try:
+#     #     registration = Registration.objects.get(id=registration_id)
+    
+#     # except:
+#     #     return render(request,"payment/error.html")
+    
+#     # final_price = event.aggregate(total_amount=Sum('amount'))["total_amount"]
+#     # print(total_amount)
+    
+#     # callback_url = 'https://'+ str(get_current_site(request))+"/handlerequest/"
+#     # print(callback_url) 
+    
+#     razorpay_order = razorpay_client.order.create(dict(amount=final_price*100, currency=currency, notes = notes, receipt=str(registration_id), payment_capture='0'))
+#     print(razorpay_order['id'])
+#     return render(request, "payment/razorpay.html", {'order':"order", 'order_id': razorpay_order['id'], 'orderId':registration_id, 'final_price':final_price, 'razorpay_merchant_id':razorpay_id, 'callback_url':callback_url})
+    
