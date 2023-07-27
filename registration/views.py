@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 import datetime
-
+from rest_framework.serializers import ValidationError
 from rest_framework import status
 from rest_framework import status
 from rest_framework.views import APIView
@@ -46,7 +46,15 @@ class RegistrationModelViewSet(ModelViewSet):
         
         if response.status_code == status.HTTP_201_CREATED:
             registration_id = response.data.get("id")
-            order_response = rz.create_order(registration_id, 2000)
+            try:
+                payment_amt = int(request.data.get("payment_amt"))
+                print(payment_amt)
+            
+            except Exception as e:
+                raise ValidationError({
+                    "msg" : "There is some issue with the payment_amt data. check the key and type"
+                })
+            order_response = rz.create_order(registration_id, payment_amt)
             
             res = {
                 "status_code":status.HTTP_201_CREATED,
@@ -59,6 +67,37 @@ class RegistrationModelViewSet(ModelViewSet):
         
         return super().create(request, *args, **kwargs)
         
+        
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+
+        print("I ran ")
+        
+        if response.status_code == status.HTTP_200_OK:
+            registration_id = response.data.get("id")
+            
+            try:
+                payment_amt = int(request.data.get("payment_amt"))
+                print(payment_amt)
+            
+            except Exception as e:
+                raise ValidationError({
+                    "msg" : "There is some issue with the payment_amt data. check the key and type"
+                })
+            # Event.objects.filter()
+            order_response = rz.create_order(registration_id, payment_amt)
+            
+            res = {
+                "status_code":status.HTTP_201_CREATED,
+                "message":"Order Created",
+                "order_data":order_response,
+                "user_data":response.data,
+                
+            }
+        
+        return response
+
+
 def email(request):
     return render(request, "registration/email.html", context={})
 
@@ -136,6 +175,9 @@ class PaymentView(APIView):
                 request.data.get("razorpay_signature_id"),     
             )
             serializer.save()
+            instance = serializer.instance
+            instance.payment_success = True
+            instance.save()
             response = {
                 'status_code':status.HTTP_201_CREATED,
                 'msg': "Transaction Successful",

@@ -99,10 +99,11 @@ class Guest(models.Model):
 class Payment(models.Model):
     registration = models.ForeignKey(Registration, on_delete=models.CASCADE, null=True, blank=True)
     event = models.ManyToManyField(Event, null=True, blank=True)
-    razorpay_payment_id = models.CharField(max_length=100, null=True, blank=True)
-    razorpay_order_id = models.CharField(max_length=100, null=True, blank=True)
-    razorpay_signature_id =  models.CharField(max_length=100, null=True, blank=True)
+    razorpay_payment_id = models.CharField(max_length=100)
+    razorpay_order_id = models.CharField(max_length=100)
+    razorpay_signature_id =  models.CharField(max_length=100)
     
     payment_success = models.BooleanField(default=False, null=True, blank=True)
     payment_amt = models.PositiveIntegerField(null=True, blank=True)
     payment_date = models.DateTimeField(auto_now_add=True)
+    
