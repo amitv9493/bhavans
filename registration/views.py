@@ -94,6 +94,8 @@ class RegistrationModelViewSet(ModelViewSet):
                 "user_data":response.data,
                 
             }
+            
+            return Response(res, status=status.HTTP_200_OK)
         
         return response
 
