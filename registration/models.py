@@ -96,7 +96,7 @@ class Guest(models.Model):
 # guest details 
     
 class Payment(models.Model):
-    registration = models.ForeignKey(Registration, on_delete=models.CASCADE, null=True, blank=True)
+    registration = models.ForeignKey(Registration, on_delete=models.CASCADE, null=True, blank=True, related_name="payment")
     event = models.ManyToManyField(Event, null=True, blank=True)
     razorpay_payment_id = models.CharField(max_length=100)
     razorpay_order_id = models.CharField(max_length=100)

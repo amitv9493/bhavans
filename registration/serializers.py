@@ -22,6 +22,7 @@ class EventSerializer(serializers.ModelSerializer):
         
 class RegistrationSerializer(WritableNestedModelSerializer):
     guest = GuestSerializer(many=True)
+    payment = PaymentSerializer(many=True)
     class Meta:
         model = Registration
         fields = "__all__"
