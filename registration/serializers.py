@@ -26,6 +26,24 @@ class RegistrationSerializer(WritableNestedModelSerializer):
     class Meta:
         model = Registration
         fields = "__all__"
+
+
+class EventGETSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = "__all__"
+
+class GuestGETSerializer(serializers.ModelSerializer):
+    event = EventGETSerializer(many=True)
+    class Meta:
+        model = Guest
+        fields = "__all__"
+class RegistrationGETSerializer(serializers.ModelSerializer):
+    guest = GuestGETSerializer(many=True)
+    payment = PaymentSerializer(many=True, read_only=True)
+    class Meta:
+        model = Registration
+        fields = "__all__"
         # read_only_fields = ["events"]
 
         # extra_kwargs = {"guest": {"read_only": True}}
