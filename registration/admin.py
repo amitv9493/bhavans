@@ -35,5 +35,5 @@ class GuestAdmin(admin.ModelAdmin):
     
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["registration","payment_success","payment_amt" ]
     

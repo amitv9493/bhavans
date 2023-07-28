@@ -18,11 +18,13 @@ from payment.main import RazorpayClient
 
 rz = RazorpayClient()
 
+
 class RegistrationModelViewSet(ModelViewSet):
+    
     permission_classes = []
     authentication_classes = []
     filter_backends = [OrderingFilter, SearchFilter]
-    search_fields = ['=mobile', '=email']
+    search_fields = ["=mobile", "=email"]
 
     ordering = ["-date_created"]
     queryset = Registration.objects.all()
@@ -34,97 +36,94 @@ class RegistrationModelViewSet(ModelViewSet):
     def dispatch(self, *args, **kwargs):
         return super(RegistrationModelViewSet, self).dispatch(*args, **kwargs)
 
-    # def get_serializer_class(self):
-    #     if self.request.method in ["GET", "PATCH"]:
-    #         return RegistrationGETSerializer
-    #     return super().get_serializer_class()
+    def get_serializer_class(self):
+        if self.request.method in ["GET"]:
+            return RegistrationGETSerializer
+        return super().get_serializer_class()
 
     def create(self, request, *args, **kwargs):
-        
-        
         response = super().create(request, *args, **kwargs)
-        
+
         if response.status_code == status.HTTP_201_CREATED:
             registration_id = response.data.get("id")
             try:
                 payment_amt = int(request.data.get("payment_amt"))
                 print(payment_amt)
-            
+
             except Exception as e:
-                raise ValidationError({
-                    "msg" : e,
-                })
+                raise ValidationError(
+                    {
+                        "msg": e,
+                    }
+                )
             order_response = rz.create_order(registration_id, payment_amt)
-            
+
             res = {
-                "status_code":status.HTTP_201_CREATED,
-                "message":"Order Created",
-                "order_data":order_response,
-                "user_data":response.data,
-                
+                "status_code": status.HTTP_201_CREATED,
+                "message": "Order Created",
+                "order_data": order_response,
+                "user_data": response.data,
             }
             return Response(res, status=status.HTTP_201_CREATED)
-        
+
         return super().create(request, *args, **kwargs)
-        
-        
+
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
 
         print("I ran ")
-        
+
         if response.status_code == status.HTTP_200_OK:
             registration_id = response.data.get("id")
-            
+
             try:
                 payment_amt = int(request.data.get("payment_amt"))
                 print(payment_amt)
-            
+
             except Exception as e:
-                raise ValidationError({
-                    "msg" : "There is some issue with the payment_amt data. check the key and type"
-                })
+                raise ValidationError(
+                    {
+                        "msg": "There is some issue with the payment_amt data. check the key and type"
+                    }
+                )
             # Event.objects.filter()
             order_response = rz.create_order(registration_id, payment_amt)
-            
+
             res = {
-                "message":"Order Created",
-                "order_data":order_response,
-                "user_data":response.data,
-                
+                "message": "Order Created",
+                "order_data": order_response,
+                "user_data": response.data,
             }
-            
+
             return Response(res, status=status.HTTP_200_OK)
-        
-    
+
     def partial_update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
 
-        
         if response.status_code == status.HTTP_200_OK:
             registration_id = response.data.get("id")
-            
+
             try:
                 payment_amt = int(request.data.get("payment_amt"))
                 print(payment_amt)
-            
+
             except Exception as e:
-                raise ValidationError({
-                    "msg" : "There is some issue with the payment_amt data. check the key and type"
-                })
+                raise ValidationError(
+                    {
+                        "msg": "There is some issue with the payment_amt data. check the key and type"
+                    }
+                )
             # Event.objects.filter()
             order_response = rz.create_order(registration_id, payment_amt)
-            
+
             res = {
-                "message":"Order Created",
-                "order_data":order_response,
-                "user_data":response.data,
-                
+                "message": "Order Created",
+                "order_data": order_response,
+                "user_data": response.data,
             }
-            
+
             return Response(res, status=status.HTTP_200_OK)
         return super().partial_update(request, *args, **kwargs)
-        
 
 
 def email(request):
@@ -198,53 +197,52 @@ class PaymentView(APIView):
     def post(self, request):
         serializer = PaymentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            rz.verify_payment(
-                request.data.get("razorpay_payment_id"),
-                request.data.get("razorpay_order_id"),
-                request.data.get("razorpay_signature_id"),     
-            )
             serializer.save()
             instance = serializer.instance
-            instance.payment_success = True
-            instance.save()
-            response = {
-                'status_code':status.HTTP_201_CREATED,
-                'msg': "Transaction Successful",
-            }
-            
-            return Response(response, status=status.HTTP_201_CREATED)
+            payment_validation = rz.verify_payment(
+                request.data.get("razorpay_payment_id"),
+                request.data.get("razorpay_order_id"),
+                request.data.get("razorpay_signature_id"),
+            )
+            if payment_validation:
+                instance.payment_success = True
+                instance.save()
+                response = {
+                    "status_code": status.HTTP_201_CREATED,
+                    "msg": "Transaction Successful",
+                }
 
+            return Response(response, status=status.HTTP_201_CREATED)
 
 
 # # @api_view(["POST"])
 # def Payment(request, registration_id, event_id=[], final_price=0):
-    
+
 #     currency ="INR"
 #     notes = ""
 #     notes = {'order-type': "lifetime registration order from the website"}
 #     # event_id = request.query_params.getlist("event")
 #     # event = list(map(int,event_id))
-    
+
 #     # if len(event_id)>0:
 #     #     try:
 #     #         event = Event.objects.filter(id__in=event_id)
 #     #         print(event)
 #     #     except:
 #     #         pass
-        
+
 #     # try:
 #     #     registration = Registration.objects.get(id=registration_id)
-    
+
 #     # except:
 #     #     return render(request,"payment/error.html")
-    
+
 #     # final_price = event.aggregate(total_amount=Sum('amount'))["total_amount"]
 #     # print(total_amount)
-    
+
 #     # callback_url = 'https://'+ str(get_current_site(request))+"/handlerequest/"
-#     # print(callback_url) 
-    
+#     # print(callback_url)
+
 #     razorpay_order = razorpay_client.order.create(dict(amount=final_price*100, currency=currency, notes = notes, receipt=str(registration_id), payment_capture='0'))
 #     print(razorpay_order['id'])
 #     return render(request, "payment/razorpay.html", {'order':"order", 'order_id': razorpay_order['id'], 'orderId':registration_id, 'final_price':final_price, 'razorpay_merchant_id':razorpay_id, 'callback_url':callback_url})
-    

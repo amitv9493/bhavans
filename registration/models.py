@@ -102,7 +102,7 @@ class Payment(models.Model):
     razorpay_order_id = models.CharField(max_length=100)
     razorpay_signature_id =  models.CharField(max_length=100)
     
-    payment_success = models.BooleanField(default=False, null=True, blank=True)
+    payment_success = models.BooleanField(default=False)
     payment_amt = models.PositiveIntegerField(null=True, blank=True)
     payment_date = models.DateTimeField(auto_now_add=True)
     

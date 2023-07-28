@@ -351,16 +351,16 @@
         "colId": "history",
         "containerId": "",
         "name": "http://localhost:8000/payment/1/?event_id=[1,2,3]",
-        "url": "localhost:9000/api/registration/registration/29/",
-        "method": "PATCH",
+        "url": "localhost:9000/api/registration/registration/",
+        "method": "GET",
         "sortNum": 0,
         "created": "2023-07-26T11:38:49.164Z",
-        "modified": "2023-07-27T12:03:12.341Z",
+        "modified": "2023-07-28T09:41:44.127Z",
         "headers": [],
         "params": [],
         "body": {
             "type": "json",
-            "raw": "{\n  \"payment_amt\":2000\n}",
+            "raw": "{ \"registration\":29,\n  \"razorpay_payment_id\":\"pay_MJ7SHn32ubOOX\",\n  \"razorpay_order_id\":\"order_MJ7RknLgsvFMaL\",\n  \"razorpay_signature_id\":\"84e31fd07d8e379504677e68e9b011d12888be9d5373fdf6f2f14b1faca49bc7\"\n  \n}",
             "form": []
         },
         "tests": []
