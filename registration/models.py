@@ -86,7 +86,7 @@ class Registration(models.Model):
 
 class Guest(models.Model):
     name = models.CharField( max_length=255)
-    event = models.ManyToManyField(Event) # manytomanyfield
+    event = models.ManyToManyField(Event, null=True, blank=True) # manytomanyfield
     registration = models.ForeignKey(Registration, on_delete=models.CASCADE, related_name="guest")
     
     

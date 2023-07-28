@@ -20,13 +20,23 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = "__all__"
         
-class RegistrationSerializer(WritableNestedModelSerializer):
-    guest = GuestSerializer(many=True)
+class RegistrationSerializer(serializers.ModelSerializer):
+    guest = GuestSerializer(many=True, partial=True)
     payment = PaymentSerializer(many=True, read_only=True)
     class Meta:
         model = Registration
         fields = "__all__"
+    
+    def update(self, instance, validated_data):
+        
+        guest_data = validated_data.pop("guest")
+                
+        for i in guest_data:
 
+            guest = Guest.objects.create(name=i["name"],registration=i["registration"])
+            guest.event.set(i["event"])
+            
+        return super().update(instance, validated_data)
 
 class EventGETSerializer(serializers.ModelSerializer):
     class Meta:
