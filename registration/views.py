@@ -52,7 +52,7 @@ class RegistrationModelViewSet(ModelViewSet):
             
             except Exception as e:
                 raise ValidationError({
-                    "msg" : "There is some issue with the payment_amt data. check the key and type"
+                    "msg" : e,
                 })
             order_response = rz.create_order(registration_id, payment_amt)
             
@@ -88,7 +88,6 @@ class RegistrationModelViewSet(ModelViewSet):
             order_response = rz.create_order(registration_id, payment_amt)
             
             res = {
-                "status_code":status.HTTP_201_CREATED,
                 "message":"Order Created",
                 "order_data":order_response,
                 "user_data":response.data,
@@ -97,7 +96,35 @@ class RegistrationModelViewSet(ModelViewSet):
             
             return Response(res, status=status.HTTP_200_OK)
         
-        return response
+    
+    def partial_update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+
+        
+        if response.status_code == status.HTTP_200_OK:
+            registration_id = response.data.get("id")
+            
+            try:
+                payment_amt = int(request.data.get("payment_amt"))
+                print(payment_amt)
+            
+            except Exception as e:
+                raise ValidationError({
+                    "msg" : "There is some issue with the payment_amt data. check the key and type"
+                })
+            # Event.objects.filter()
+            order_response = rz.create_order(registration_id, payment_amt)
+            
+            res = {
+                "message":"Order Created",
+                "order_data":order_response,
+                "user_data":response.data,
+                
+            }
+            
+            return Response(res, status=status.HTTP_200_OK)
+        return super().partial_update(request, *args, **kwargs)
+        
 
 
 def email(request):

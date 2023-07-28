@@ -79,7 +79,6 @@ class Registration(models.Model):
     )
     date_created = models.DateTimeField(auto_now_add=True)
     
-    file = models.FileField(upload_to='media', null=True, blank=True)
     
     def __str__(self) -> str:
         return self.name if self.name else "NONE"
