@@ -20,7 +20,6 @@ rz = RazorpayClient()
 
 
 class RegistrationModelViewSet(ModelViewSet):
-    
     permission_classes = []
     authentication_classes = []
     filter_backends = [OrderingFilter, SearchFilter]
@@ -47,7 +46,7 @@ class RegistrationModelViewSet(ModelViewSet):
         if response.status_code == status.HTTP_201_CREATED:
             registration_id = response.data.get("id")
             try:
-                payment_amt = int(request.data.get("payment_amt"))
+                payment_amt = request.data.get("payment_amt")
                 print(payment_amt)
 
             except Exception as e:

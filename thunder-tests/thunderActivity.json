@@ -351,16 +351,16 @@
         "colId": "history",
         "containerId": "",
         "name": "http://localhost:8000/payment/1/?event_id=[1,2,3]",
-        "url": "localhost:9000/api/registration/registration/29/",
-        "method": "PATCH",
+        "url": "localhost:9000/api/registration/registration/",
+        "method": "POST",
         "sortNum": 0,
         "created": "2023-07-26T11:38:49.164Z",
-        "modified": "2023-07-28T10:53:06.195Z",
+        "modified": "2023-07-29T08:26:37.205Z",
         "headers": [],
         "params": [],
         "body": {
             "type": "json",
-            "raw": "{ \"payment_amt\":2000,\n  \"guest\":[\n    {\n      \"name\":\"hello\",\n      \"registration\":29,\n      \"event\":[1,2,3]\n    },\n    {\n      \"name\":\"AMirt\",\n      \"registration\":29,\n      \"event\":[1,2]\n    }\n    \n    ]\n}",
+            "raw": "{\n  \n  \"guest\":[\n    {\n      \"name\":\"Pritee\",\n      \"event\":[1,2,3],\n      \"registration\":49\n    }\n    ],\n  \"payment_amt\":2000\n}",
             "form": []
         },
         "tests": []
