@@ -100,7 +100,7 @@ class Registration(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.name if self.name else "NONE"
+        return f"{self.first_name} {self.last_name}"
 
 
 class Guest(models.Model):
