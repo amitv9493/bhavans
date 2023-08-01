@@ -10,8 +10,12 @@ router.register("registration", RegistrationModelViewSet, "register")
 
 urlpatterns = [
     path("email/", email),
+    path(
+        "create/order/",
+        getOrderCreated,
+    ),
     # path("create/",RegistrationCreateView.as_view()),
     path("get/current-events/", EventGETView.as_view()),
-    path("payment/<int:registration_id>/",Payment, name="payment"),
+    path("payment/<int:registration_id>/", Payment, name="payment"),
     path("payment/complete/", PaymentView.as_view()),
 ] + router.urls

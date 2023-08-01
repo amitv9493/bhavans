@@ -10,13 +10,32 @@ from rest_framework.serializers import ValidationError
 from rest_framework import status
 from rest_framework import status
 from rest_framework.views import APIView
-
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework import status
 from payment.main import RazorpayClient
 
 rz = RazorpayClient()
+
+
+@csrf_exempt
+@api_view(["POST"])
+def getOrderCreated(request):
+    if request.method == "POST":
+        registration_id = 0
+        try:
+            payment_amt = request.data.get("payment_amt")
+
+        except Exception as e:
+            raise ValidationError(
+                {
+                    "msg": e,
+                }
+            )
+        order_response = rz.create_order(registration_id, payment_amt)
+
+        return Response(order_response, status=status.HTTP_201_CREATED)
 
 
 class RegistrationModelViewSet(ModelViewSet):
@@ -41,31 +60,48 @@ class RegistrationModelViewSet(ModelViewSet):
         return super().get_serializer_class()
 
     def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
+        # if response.status_code == status.HTTP_201_CREATED:
+        #     registration_id = response.data.get("id")
+        #     try:
+        #         payment_amt = request.data.get("payment_amt")
+        #         print(payment_amt)
 
-        if response.status_code == status.HTTP_201_CREATED:
-            registration_id = response.data.get("id")
-            try:
-                payment_amt = request.data.get("payment_amt")
-                print(payment_amt)
+        #     except Exception as e:
+        #         raise ValidationError(
+        #             {
+        #                 "msg": e,
+        #             }
+        #         )
+        #     order_response = rz.create_order(registration_id, payment_amt)
 
-            except Exception as e:
-                raise ValidationError(
-                    {
-                        "msg": e,
-                    }
-                )
-            order_response = rz.create_order(registration_id, payment_amt)
-
-            res = {
-                "status_code": status.HTTP_201_CREATED,
-                "message": "Order Created",
-                "order_data": order_response,
-                "user_data": response.data,
+        #     res = {
+        #         "status_code": status.HTTP_201_CREATED,
+        #         "message": "Order Created",
+        #         "order_data": order_response,
+        #         "user_data": response.data,
+        #     }
+        #     return Response(res, status=status.HTTP_201_CREATED)
+        payment_validation = rz.verify_payment(
+            request.data.get("razorpay_payment_id"),
+            request.data.get("razorpay_order_id"),
+            request.data.get("razorpay_signature_id"),
+        )
+        if payment_validation:
+            response = super().create(request, *args, **kwargs)
+            data = {
+                "registration": response.data.get("id"),
+                "razorpay_payment_id": request.data.get("razorpay_payment_id"),
+                "razorpay_order_id": request.data.get("razorpay_order_id"),
+                "razorpay_signature_id": request.data.get("razorpay_signature_id"),
+                "payment_success": True,
+                "payment_amt": 2000,
             }
-            return Response(res, status=status.HTTP_201_CREATED)
 
-        return super().create(request, *args, **kwargs)
+            payment_serializer = PaymentSerializer(data=data)
+            if payment_serializer.is_valid(raise_exception=True):
+                payment_serializer.save()
+
+            return response
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
