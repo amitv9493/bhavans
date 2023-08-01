@@ -10,22 +10,35 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):
-    date_hierarchy = "date_created"
     list_display = (
         "id",
         "first_name",
         "last_name",
         "email",
+        "dob",
+        "address",
+        "country",
+        "countryISO",
+        "state",
+        "stateISO",
+        "city",
+        "cityISO",
+        "anniversary_date",
         "mobile",
+        "profession",
         "passing_school",
         "attend_reunion",
-        # "event",
+        "members_attending_event",
         "shirt_size",
         "firm_name",
         "date_created",
     )
-    list_filter = ("attend_reunion",)
-    search_fields = ("name",)
+    list_filter = (
+        "dob",
+        "anniversary_date",
+        "attend_reunion",
+        "date_created",
+    )
 
 
 @admin.register(Guest)

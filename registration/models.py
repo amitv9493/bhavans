@@ -57,6 +57,19 @@ class Registration(models.Model):
     first_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=254, null=True, blank=True)
+    dob = models.DateField(null=True, blank=True)
+
+    # Address info
+    address = models.TextField(null=True, blank=True)
+    country = models.CharField(null=True, blank=True, max_length=50)
+    countryISO = models.CharField(null=True, blank=True, max_length=50)
+    state = models.CharField(null=True, blank=True, max_length=50)
+    stateISO = models.CharField(null=True, blank=True, max_length=50)
+    city = models.CharField(null=True, blank=True, max_length=50)
+    cityISO = models.CharField(null=True, blank=True, max_length=50)
+
+    anniversary_date = models.DateField(null=True, blank=True)
+
     mobile = models.CharField(max_length=20, null=True, blank=True)
     profession = models.CharField(
         max_length=50,

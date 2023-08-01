@@ -496,14 +496,66 @@
         "method": "POST",
         "sortNum": 0,
         "created": "2023-07-27T09:30:12.000Z",
-        "modified": "2023-07-27T09:30:35.392Z",
+        "modified": "2023-08-01T09:44:31.853Z",
         "headers": [],
         "params": [],
         "body": {
             "type": "json",
-            "raw": "{\n  \"guest\":[],\n  \"address\":\"sdsdsd\"\n}",
+            "raw": "{\n  \"payment_amt\":2000\n}",
             "form": []
         },
+        "tests": []
+    },
+    {
+        "_id": "d195707e-171b-47c7-9d54-eefe03ee5477",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9000/api/create/order/",
+        "url": "localhost:9000/api/create/order/",
+        "method": "POST",
+        "sortNum": 0,
+        "created": "2023-08-01T09:26:25.932Z",
+        "modified": "2023-08-01T09:26:25.932Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n  \"payement_amt\":2000\n}",
+            "form": []
+        },
+        "tests": []
+    },
+    {
+        "_id": "f661edb0-48ae-4839-906d-8ce619e0980f",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9000/api/registration/create/order/",
+        "url": "localhost:9000/api/registration/create/order/",
+        "method": "POST",
+        "sortNum": 0,
+        "created": "2023-08-01T09:26:42.113Z",
+        "modified": "2023-08-01T09:48:02.580Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n  \"payment_amt\":2000\n}",
+            "form": []
+        },
+        "tests": []
+    },
+    {
+        "_id": "eddb937f-bf2a-4734-8f4b-0c828d197e89",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9000/registration/api/create/order/",
+        "url": "localhost:9000/registration/api/create/order/",
+        "method": "POST",
+        "sortNum": 0,
+        "created": "2023-08-01T09:45:53.894Z",
+        "modified": "2023-08-01T09:45:53.894Z",
+        "headers": [],
+        "params": [],
         "tests": []
     }
 ]
