@@ -5,15 +5,16 @@ from .models import *
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('id', 'event_name')
+    list_display = ("id", "event_name")
+
 
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):
-    
     date_hierarchy = "date_created"
     list_display = (
         "id",
-        "name",
+        "first_name",
+        "last_name",
         "email",
         "mobile",
         "passing_school",
@@ -29,11 +30,11 @@ class RegistrationAdmin(admin.ModelAdmin):
 
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'registration')
-    list_filter = ('event', 'registration')
-    search_fields = ('name',)
-    
+    list_display = ("id", "name", "registration")
+    list_filter = ("event", "registration")
+    search_fields = ("name",)
+
+
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ["registration","payment_success","payment_amt" ]
-    
+    list_display = ["registration", "payment_success", "payment_amt"]
