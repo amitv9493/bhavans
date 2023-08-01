@@ -557,5 +557,43 @@
         "headers": [],
         "params": [],
         "tests": []
+    },
+    {
+        "_id": "a39d42a0-ff66-4287-81c4-302a44c7fabf",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9000/api/registration/registration/29/",
+        "url": "localhost:9000/api/registration/registration/29/",
+        "method": "GET",
+        "sortNum": 0,
+        "created": "2023-08-01T11:37:29.421Z",
+        "modified": "2023-08-01T11:37:29.421Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n  \"first_name\": \"nothing\",\n  \"last_name\": \"nothing\",\n  \"email\": \"nothing@nothing.com\",\n  \"mobile\": \"6445\",\n  \"passing_school\": \"2016\",\n  \"guest\": [],\n  \"razorpay_payment_id\": \"pay_MKm5XEkNEBJCGa\",\n  \"razorpay_order_id\": \"order_MKm4KAwVh5f3yQ\",\n  \"razorpay_signature\": \"564500741653c238029cc475e11bb74537944f1c698da46baebf4a9f63b73eac\",\n  \"event\": [\n    1\n  ],\n  \"payment_amt\": 2000,\n  \"razorpay_signature_id\": \"564500741653c238029cc475e11bb74537944f1c698da46baebf4a9f63b73eac\"\n}",
+            "form": []
+        },
+        "tests": []
+    },
+    {
+        "_id": "9b0161e0-6088-46eb-be8f-7a55231e6a26",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9000/api/registration/registration/29/",
+        "url": "localhost:9000/api/registration/registration/29/",
+        "method": "PATCH",
+        "sortNum": 0,
+        "created": "2023-08-01T11:37:50.987Z",
+        "modified": "2023-08-01T11:38:56.503Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n  \"first_name\": \"nothing\",\n  \"last_name\": \"nothing\",\n  \"email\": \"nothing@nothing.com\",\n  \"mobile\": \"6445\",\n  \"passing_school\": \"2016\",\n  \"guest\": [],\n  \"razorpay_payment_id\": \"pay_MKm5XEkNEBJCGa\",\n  \"razorpay_order_id\": \"order_MKm4KAwVh5f3yQ\",\n  \"razorpay_signature\": \"564500741653c238029cc475e11bb74537944f1c698da46baebf4a9f63b73eac\",\n  \"event\": [\n    1,\n    2,\n    3\n  ],\n  \"payment_amt\": 2000,\n  \"razorpay_signature_id\": \"564500741653c238029cc475e11bb74537944f1c698da46baebf4a9f63b73eac\"\n}",
+            "form": []
+        },
+        "tests": []
     }
 ]
