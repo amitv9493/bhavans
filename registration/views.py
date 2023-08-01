@@ -101,7 +101,7 @@ class RegistrationModelViewSet(ModelViewSet):
             if payment_serializer.is_valid(raise_exception=True):
                 payment_serializer.save()
 
-            return response
+        return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)

@@ -496,12 +496,12 @@
         "method": "POST",
         "sortNum": 0,
         "created": "2023-07-27T09:30:12.000Z",
-        "modified": "2023-08-01T09:44:31.853Z",
+        "modified": "2023-08-01T10:44:02.993Z",
         "headers": [],
         "params": [],
         "body": {
             "type": "json",
-            "raw": "{\n  \"payment_amt\":2000\n}",
+            "raw": "{\n  \"first_name\": \"nothing\",\n  \"last_name\": \"nothing\",\n  \"email\": \"nothing@nothing.com\",\n  \"mobile\": \"6445\",\n  \"passing_school\": \"2016\",\n  \"guest\": [],\n  \"razorpay_payment_id\": \"pay_MKm5XEkNEBJCGa\",\n  \"razorpay_order_id\": \"order_MKm4KAwVh5f3yQ\",\n  \"razorpay_signature\": \"564500741653c238029cc475e11bb74537944f1c698da46baebf4a9f63b73eac\",\n  \"event\": [\n    1\n  ],\n  \"payment_amt\": 2000,\n  \"razorpay_signature_id\": \"564500741653c238029cc475e11bb74537944f1c698da46baebf4a9f63b73eac\"\n}",
             "form": []
         },
         "tests": []
