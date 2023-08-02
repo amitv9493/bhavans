@@ -122,6 +122,8 @@ class RegistrationModelViewSet(ModelViewSet):
 
             return response
 
+        return super().update(request, *args, **kwargs)
+
 
 def email(request):
     return render(request, "registration/email.html", context={})
