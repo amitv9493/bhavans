@@ -250,7 +250,6 @@ class PaymentView(APIView):
 def ReferenceCreateView(request):
     if request.method == "POST":
         registered_emails = set(Registration.objects.values_list("email", flat=True))
-        registered_emails.remove(None)
         for i in request.data:
             if i["email"] in registered_emails:
                 i["has_joined"] = True

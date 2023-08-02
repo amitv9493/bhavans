@@ -582,11 +582,11 @@
         "colId": "history",
         "containerId": "",
         "name": "localhost:9000/api/registration/registration/29/",
-        "url": "localhost:8000/api/registration/refer/33",
+        "url": "localhost:8000/api/registration/refer/35",
         "method": "GET",
         "sortNum": 0,
         "created": "2023-08-01T11:37:50.987Z",
-        "modified": "2023-08-02T09:56:41.663Z",
+        "modified": "2023-08-02T10:01:55.550Z",
         "headers": [],
         "params": [
             {
