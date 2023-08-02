@@ -102,3 +102,11 @@ class RegistrationGETSerializer(serializers.ModelSerializer):
 #                 Guest.objects.get_or_create(**guest)
 
 #         return super().update(instance, validated_data)
+
+
+class ReferenceSerializer(serializers.ModelSerializer):
+    # has_joined = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = Reference
+        fields = "__all__"

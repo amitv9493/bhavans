@@ -52,3 +52,8 @@ class GuestAdmin(admin.ModelAdmin):
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ["registration", "payment_success", "payment_amt"]
     list_filter = ["registration"]
+
+
+@admin.register(Reference)
+class ReferenceAdmin(admin.ModelAdmin):
+    list_display = ["id", "name", "email", "has_joined"]

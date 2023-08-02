@@ -18,4 +18,5 @@ urlpatterns = [
     path("get/current-events/", EventGETView.as_view()),
     path("payment/<int:registration_id>/", Payment, name="payment"),
     path("payment/complete/", PaymentView.as_view()),
+    path("refer/", ReferenceCreateView),
 ] + router.urls

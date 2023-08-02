@@ -137,3 +137,15 @@ class Payment(models.Model):
     payment_success = models.BooleanField(default=False)
     payment_amt = models.PositiveIntegerField(null=True, blank=True)
     payment_date = models.DateTimeField(auto_now_add=True)
+
+
+class Reference(models.Model):
+    registration = models.ForeignKey(
+        Registration, verbose_name="Reffered By", on_delete=models.CASCADE
+    )
+    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=254)
+    has_joined = models.BooleanField(("Has Joined"), default=False)
+
+    def __str__(self) -> str:
+        return self.name

@@ -243,3 +243,20 @@ class PaymentView(APIView):
 #     razorpay_order = razorpay_client.order.create(dict(amount=final_price*100, currency=currency, notes = notes, receipt=str(registration_id), payment_capture='0'))
 #     print(razorpay_order['id'])
 #     return render(request, "payment/razorpay.html", {'order':"order", 'order_id': razorpay_order['id'], 'orderId':registration_id, 'final_price':final_price, 'razorpay_merchant_id':razorpay_id, 'callback_url':callback_url})
+
+
+@csrf_exempt
+@api_view(["POST"])
+def ReferenceCreateView(request):
+    if request.method == "POST":
+        registered_emails = set(Registration.objects.values_list("email", flat=True))
+        registered_emails.remove(None)
+        for i in request.data:
+            if i["email"] in registered_emails:
+                i["has_joined"] = True
+
+        serializer = ReferenceSerializer(data=request.data, many=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)

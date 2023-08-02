@@ -582,11 +582,11 @@
         "colId": "history",
         "containerId": "",
         "name": "localhost:9000/api/registration/registration/29/",
-        "url": "localhost:8000/api/registration/registration/61/?bypass_payment=1",
-        "method": "PATCH",
+        "url": "localhost:8000/api/registration/refer/",
+        "method": "POST",
         "sortNum": 0,
         "created": "2023-08-01T11:37:50.987Z",
-        "modified": "2023-08-02T08:19:43.053Z",
+        "modified": "2023-08-02T09:13:06.608Z",
         "headers": [],
         "params": [
             {
@@ -606,16 +606,11 @@
                 "value": "2016",
                 "isDisabled": true,
                 "isPath": false
-            },
-            {
-                "name": "bypass_payment",
-                "value": "1",
-                "isPath": false
             }
         ],
         "body": {
             "type": "json",
-            "raw": "{\n  \"id\": 61,\n  \"guest\": [],\n  \"payment\": [],\n  \"first_name\": \"Hello world\",\n  \"last_name\": \"nothing\",\n  \"email\": \"nothing@nothing.com\",\n  \"dob\": null,\n  \"address\": null,\n  \"country\": null,\n  \"countryISO\": null,\n  \"state\": null,\n  \"stateISO\": null,\n  \"city\": null,\n  \"cityISO\": null,\n  \"anniversary_date\": null,\n  \"mobile\": \"6445\",\n  \"profession\": \"Others\",\n  \"passing_school\": 2016,\n  \"attend_reunion\": null,\n  \"members_attending_event\": null,\n  \"shirt_size\": null,\n  \"firm_name\": null,\n  \"date_created\": \"2023-08-02T10:10:22.754306\"\n}",
+            "raw": "[\n  {\n    \"name\": \"Amit\",\n    \"registration\": 33,\n    \"email\": \"amitv9493@gmail.com\"\n  },\n  {\n    \"name\":\"Sunita\",\n    \"registration\":33,\n    \"email\":\"amit@gmail.com\"\n  }\n]",
             "form": []
         },
         "tests": []
