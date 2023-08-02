@@ -53,6 +53,11 @@ class RegistrationModelViewSet(ModelViewSet):
 
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
         return super(RegistrationModelViewSet, self).dispatch(*args, **kwargs)
@@ -87,6 +92,7 @@ class RegistrationModelViewSet(ModelViewSet):
 
     def partial_update(self, request, *args, **kwargs):
         bypass_payment = request.query_params.get("bypass_payment", None)
+        # print(request.data)
         if not bypass_payment:
             try:
                 payment_amt = int(request.data.get("payment_amt"))

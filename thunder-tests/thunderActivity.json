@@ -582,11 +582,11 @@
         "colId": "history",
         "containerId": "",
         "name": "localhost:9000/api/registration/registration/29/",
-        "url": "localhost:8000/api/registration/refer/35",
-        "method": "GET",
+        "url": "localhost:8000/api/registration/registration/33/?bypass_payment=1",
+        "method": "PATCH",
         "sortNum": 0,
         "created": "2023-08-01T11:37:50.987Z",
-        "modified": "2023-08-02T10:01:55.550Z",
+        "modified": "2023-08-02T12:48:40.881Z",
         "headers": [],
         "params": [
             {
@@ -606,12 +606,28 @@
                 "value": "2016",
                 "isDisabled": true,
                 "isPath": false
+            },
+            {
+                "name": "bypass_payment",
+                "value": "1",
+                "isPath": false
             }
         ],
         "body": {
-            "type": "json",
-            "raw": "[\n  {\n    \"name\": \"Amit\",\n    \"registration\": 33,\n    \"email\": \"amitv9493@gmail.com\"\n  },\n  {\n    \"name\":\"Sunita\",\n    \"registration\":33,\n    \"email\":\"amit@gmail.com\"\n  }\n]",
-            "form": []
+            "type": "formdata",
+            "raw": "",
+            "form": [
+                {
+                    "name": "guest",
+                    "value": "[{}]"
+                },
+                {
+                    "name": "image",
+                    "value": "",
+                    "isDisabled": true
+                }
+            ],
+            "files": []
         },
         "tests": []
     }

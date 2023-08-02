@@ -23,7 +23,7 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
-    guest = GuestSerializer(many=True, partial=True)
+    guest = GuestSerializer(many=True, required=False)
     payment = PaymentSerializer(many=True, read_only=True)
 
     def create(self, validated_data):
@@ -39,7 +39,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def update(self, instance, validated_data):
-        guest_data = validated_data.pop("guest")
+        guest_data = validated_data.pop("guest", [])
 
         for i in guest_data:
             guest = Guest.objects.create(name=i["name"], registration=i["registration"])
