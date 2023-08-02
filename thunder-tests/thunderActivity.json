@@ -582,16 +582,40 @@
         "colId": "history",
         "containerId": "",
         "name": "localhost:9000/api/registration/registration/29/",
-        "url": "localhost:9000/api/registration/registration/29/",
+        "url": "localhost:8000/api/registration/registration/61/?bypass_payment=1",
         "method": "PATCH",
         "sortNum": 0,
         "created": "2023-08-01T11:37:50.987Z",
-        "modified": "2023-08-01T11:38:56.503Z",
+        "modified": "2023-08-02T08:19:43.053Z",
         "headers": [],
-        "params": [],
+        "params": [
+            {
+                "name": "search",
+                "value": "amit",
+                "isDisabled": true,
+                "isPath": false
+            },
+            {
+                "name": "search",
+                "value": "nothing",
+                "isDisabled": true,
+                "isPath": false
+            },
+            {
+                "name": "passing_school",
+                "value": "2016",
+                "isDisabled": true,
+                "isPath": false
+            },
+            {
+                "name": "bypass_payment",
+                "value": "1",
+                "isPath": false
+            }
+        ],
         "body": {
             "type": "json",
-            "raw": "{\n  \"first_name\": \"nothing\",\n  \"last_name\": \"nothing\",\n  \"email\": \"nothing@nothing.com\",\n  \"mobile\": \"6445\",\n  \"passing_school\": \"2016\",\n  \"guest\": [],\n  \"razorpay_payment_id\": \"pay_MKm5XEkNEBJCGa\",\n  \"razorpay_order_id\": \"order_MKm4KAwVh5f3yQ\",\n  \"razorpay_signature\": \"564500741653c238029cc475e11bb74537944f1c698da46baebf4a9f63b73eac\",\n  \"event\": [\n    1,\n    2,\n    3\n  ],\n  \"payment_amt\": 2000,\n  \"razorpay_signature_id\": \"564500741653c238029cc475e11bb74537944f1c698da46baebf4a9f63b73eac\"\n}",
+            "raw": "{\n  \"id\": 61,\n  \"guest\": [],\n  \"payment\": [],\n  \"first_name\": \"Hello world\",\n  \"last_name\": \"nothing\",\n  \"email\": \"nothing@nothing.com\",\n  \"dob\": null,\n  \"address\": null,\n  \"country\": null,\n  \"countryISO\": null,\n  \"state\": null,\n  \"stateISO\": null,\n  \"city\": null,\n  \"cityISO\": null,\n  \"anniversary_date\": null,\n  \"mobile\": \"6445\",\n  \"profession\": \"Others\",\n  \"passing_school\": 2016,\n  \"attend_reunion\": null,\n  \"members_attending_event\": null,\n  \"shirt_size\": null,\n  \"firm_name\": null,\n  \"date_created\": \"2023-08-02T10:10:22.754306\"\n}",
             "form": []
         },
         "tests": []

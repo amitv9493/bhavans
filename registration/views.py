@@ -86,19 +86,17 @@ class RegistrationModelViewSet(ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):
-        try:
-            payment_amt = int(request.data.get("payment_amt"))
-            print(payment_amt)
-
-        except Exception as e:
-            raise ValidationError(
-                {
-                    "msg": "There is some issue with the payment_amt data. check the key and type"
-                }
-            )
-
-        bypass_payment = request.data.get("bypass_payment", None)
+        bypass_payment = request.query_params.get("bypass_payment", None)
         if not bypass_payment:
+            try:
+                payment_amt = int(request.data.get("payment_amt"))
+                print(payment_amt)
+            except Exception as e:
+                raise ValidationError(
+                    {
+                        "msg": "There is some issue with the payment_amt data. check the key and type"
+                    }
+                )
             payment_validation = rz.verify_payment(
                 request.data.get("razorpay_payment_id"),
                 request.data.get("razorpay_order_id"),
