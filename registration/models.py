@@ -102,6 +102,10 @@ class Registration(models.Model):
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
 
+    @property
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Guest(models.Model):
     name = models.CharField(max_length=255)

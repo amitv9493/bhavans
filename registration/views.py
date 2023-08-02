@@ -42,7 +42,10 @@ class RegistrationModelViewSet(ModelViewSet):
     permission_classes = []
     authentication_classes = []
     filter_backends = [OrderingFilter, SearchFilter]
-    search_fields = ["=mobile", "=email"]
+    filterset_fields = [
+        "passing_school",
+    ]
+    search_fields = ["first_name", "last_name"]
 
     ordering = ["-date_created"]
     queryset = Registration.objects.all()
@@ -60,27 +63,6 @@ class RegistrationModelViewSet(ModelViewSet):
         return super().get_serializer_class()
 
     def create(self, request, *args, **kwargs):
-        # if response.status_code == status.HTTP_201_CREATED:
-        #     registration_id = response.data.get("id")
-        #     try:
-        #         payment_amt = request.data.get("payment_amt")
-        #         print(payment_amt)
-
-        #     except Exception as e:
-        #         raise ValidationError(
-        #             {
-        #                 "msg": e,
-        #             }
-        #         )
-        #     order_response = rz.create_order(registration_id, payment_amt)
-
-        #     res = {
-        #         "status_code": status.HTTP_201_CREATED,
-        #         "message": "Order Created",
-        #         "order_data": order_response,
-        #         "user_data": response.data,
-        #     }
-        #     return Response(res, status=status.HTTP_201_CREATED)
         payment_validation = rz.verify_payment(
             request.data.get("razorpay_payment_id"),
             request.data.get("razorpay_order_id"),
@@ -103,35 +85,6 @@ class RegistrationModelViewSet(ModelViewSet):
 
         return super().create(request, *args, **kwargs)
 
-        # def update(self, request, *args, **kwargs):
-        response = super().update(request, *args, **kwargs)
-
-        print("I ran ")
-
-        if response.status_code == status.HTTP_200_OK:
-            registration_id = response.data.get("id")
-
-            try:
-                payment_amt = int(request.data.get("payment_amt"))
-                print(payment_amt)
-
-            except Exception as e:
-                raise ValidationError(
-                    {
-                        "msg": "There is some issue with the payment_amt data. check the key and type"
-                    }
-                )
-            # Event.objects.filter()
-            order_response = rz.create_order(registration_id, payment_amt)
-
-            res = {
-                "message": "Order Created",
-                "order_data": order_response,
-                "user_data": response.data,
-            }
-
-            return Response(res, status=status.HTTP_200_OK)
-
     def partial_update(self, request, *args, **kwargs):
         try:
             payment_amt = int(request.data.get("payment_amt"))
@@ -143,28 +96,31 @@ class RegistrationModelViewSet(ModelViewSet):
                     "msg": "There is some issue with the payment_amt data. check the key and type"
                 }
             )
-        payment_validation = rz.verify_payment(
-            request.data.get("razorpay_payment_id"),
-            request.data.get("razorpay_order_id"),
-            request.data.get("razorpay_signature_id"),
-        )
-        if payment_validation:
-            response = super().update(request, *args, **kwargs)
-            data = {
-                "registration": response.data.get("id"),
-                "razorpay_payment_id": request.data.get("razorpay_payment_id"),
-                "event": request.data.get("event", []),
-                "razorpay_order_id": request.data.get("razorpay_order_id"),
-                "razorpay_signature_id": request.data.get("razorpay_signature_id"),
-                "payment_success": True,
-                "payment_amt": payment_amt,
-            }
 
-            payment_serializer = PaymentSerializer(data=data)
-            if payment_serializer.is_valid(raise_exception=True):
-                payment_serializer.save()
+        bypass_payment = request.data.get("bypass_payment", None)
+        if not bypass_payment:
+            payment_validation = rz.verify_payment(
+                request.data.get("razorpay_payment_id"),
+                request.data.get("razorpay_order_id"),
+                request.data.get("razorpay_signature_id"),
+            )
+            if payment_validation:
+                response = super().update(request, *args, **kwargs)
+                data = {
+                    "registration": response.data.get("id"),
+                    "razorpay_payment_id": request.data.get("razorpay_payment_id"),
+                    "event": request.data.get("event", []),
+                    "razorpay_order_id": request.data.get("razorpay_order_id"),
+                    "razorpay_signature_id": request.data.get("razorpay_signature_id"),
+                    "payment_success": True,
+                    "payment_amt": payment_amt,
+                }
 
-        return response
+                payment_serializer = PaymentSerializer(data=data)
+                if payment_serializer.is_valid(raise_exception=True):
+                    payment_serializer.save()
+
+            return response
 
 
 def email(request):
