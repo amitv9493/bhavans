@@ -103,7 +103,7 @@ class RegistrationModelViewSet(ModelViewSet):
 
         return super().create(request, *args, **kwargs)
 
-    def update(self, request, *args, **kwargs):
+        # def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
 
         print("I ran ")
@@ -149,22 +149,22 @@ class RegistrationModelViewSet(ModelViewSet):
             request.data.get("razorpay_signature_id"),
         )
         if payment_validation:
-            response = super().create(request, *args, **kwargs)
+            response = super().update(request, *args, **kwargs)
             data = {
                 "registration": response.data.get("id"),
                 "razorpay_payment_id": request.data.get("razorpay_payment_id"),
-                "event": request.data.get("event"),
+                "event": request.data.get("event", []),
                 "razorpay_order_id": request.data.get("razorpay_order_id"),
                 "razorpay_signature_id": request.data.get("razorpay_signature_id"),
                 "payment_success": True,
-                "payment_amt": 2000,
+                "payment_amt": payment_amt,
             }
 
             payment_serializer = PaymentSerializer(data=data)
             if payment_serializer.is_valid(raise_exception=True):
                 payment_serializer.save()
 
-        return super().create(request, *args, **kwargs)
+        return response
 
 
 def email(request):
