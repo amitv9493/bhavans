@@ -246,7 +246,7 @@ class PaymentView(APIView):
 
 
 @csrf_exempt
-@api_view(["POST"])
+@api_view(["POST", "GET"])
 def ReferenceCreateView(request):
     if request.method == "POST":
         registered_emails = set(Registration.objects.values_list("email", flat=True))
@@ -260,3 +260,11 @@ def ReferenceCreateView(request):
             serializer.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(["GET"])
+def ReferenceGETView(request, pk):
+    if request.method == "GET":
+        data = Reference.objects.filter(registration=pk)
+        serializer = ReferenceSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
