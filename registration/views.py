@@ -15,6 +15,9 @@ from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework import status
 from payment.main import RazorpayClient
+from django.db.models.signals import post_save
+from .signals import *
+from django.db.models import Sum
 
 rz = RazorpayClient()
 
@@ -75,6 +78,9 @@ class RegistrationModelViewSet(ModelViewSet):
         )
         if payment_validation:
             response = super().create(request, *args, **kwargs)
+            event_id = Event.objects.get(
+                event_name__icontains="Life Time Membership"
+            ).id
             data = {
                 "registration": response.data.get("id"),
                 "razorpay_payment_id": request.data.get("razorpay_payment_id"),
@@ -82,16 +88,19 @@ class RegistrationModelViewSet(ModelViewSet):
                 "razorpay_signature_id": request.data.get("razorpay_signature_id"),
                 "payment_success": True,
                 "payment_amt": 2000,
+                "event": [event_id],
             }
 
             payment_serializer = PaymentSerializer(data=data)
             if payment_serializer.is_valid(raise_exception=True):
                 payment_serializer.save()
 
+                send_email_on_save(instance=payment_serializer.instance, created=True)
         return super().create(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):
         bypass_payment = request.query_params.get("bypass_payment", None)
+
         # print(request.data)
         if not bypass_payment:
             try:
@@ -118,11 +127,20 @@ class RegistrationModelViewSet(ModelViewSet):
                     "razorpay_signature_id": request.data.get("razorpay_signature_id"),
                     "payment_success": True,
                     "payment_amt": payment_amt,
+                    "event": request.data.get("event", None),
                 }
 
                 payment_serializer = PaymentSerializer(data=data)
                 if payment_serializer.is_valid(raise_exception=True):
                     payment_serializer.save()
+                    guests = Guest.objects.filter(
+                        registration__id=response.data.get("id")
+                    ).annotate(amount=Sum("event__amount"))
+                    send_email_on_save(
+                        instance=payment_serializer.instance,
+                        created=True,
+                        guest_list=guests,
+                    )
 
             return response
 

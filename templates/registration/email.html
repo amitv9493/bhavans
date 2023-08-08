@@ -115,6 +115,35 @@
             <p>The Sum of Rupees :-{{amt}}</p>
           </div>
         </div>
+        
+        {% if guest_list %}
+        
+        <div class="col-md-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Attending Event</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in guest_list %}
+              <tr>
+                  <td>{{ i.name }}</td>
+                  <td>
+                      {% for j in i.event.all %}
+                          {{ j }}
+                          {% if not forloop.last %}, {% endif %}
+                      {% endfor %}
+                  </td>
+                  <td>{{i.amount}}</td>
+              </tr>
+              {% endfor %}
+            
+        </div>
+        {% endif %}
+        
         <div class="col-md-3 offset-md-3">
           <div class="textSize">
             <p>Payment Transaction ID :-{{transactionID}}</p>

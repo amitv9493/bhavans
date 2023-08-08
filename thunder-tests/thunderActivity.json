@@ -49,35 +49,13 @@
         "method": "GET",
         "sortNum": 0,
         "created": "2023-07-25T12:22:39.369Z",
-        "modified": "2023-07-25T12:22:39.369Z",
+        "modified": "2023-08-08T09:43:25.670Z",
         "headers": [],
         "params": [],
         "body": {
-            "type": "formdata",
-            "raw": "",
-            "form": [
-                {
-                    "name": "address",
-                    "value": "34fsdf"
-                },
-                {
-                    "name": "payment_amount",
-                    "value": "1000"
-                },
-                {
-                    "name": "guest",
-                    "value": ""
-                },
-                {
-                    "name": "event",
-                    "value": "[1,2,3]",
-                    "isDisabled": true
-                },
-                {
-                    "name": "name",
-                    "value": "Sam Altman"
-                }
-            ]
+            "type": "json",
+            "raw": "{\n  \"razorpay_payment_id\": \"pay_ML5kX1S8FYnjFh\",\n  \"razorpay_order_id\": \"order_ML5joiAkirhxLG\",\n  \"razorpay_signature_id\": \"6b523fecf9039bce662a29a50c5ca0d5d0e0cb2dad76dd84009276830a33fe6e\",\n  \"guest\": [],\n  \"first_name\": \"AMit\",\n  \"last_name\": \"Patel\",\n  \"image\": null,\n  \"email\": \"amitv9493@gmail.com\",\n  \"dob\": null,\n  \"address\": null,\n  \"country\": null,\n  \"countryISO\": null,\n  \"state\": null,\n  \"stateISO\": null,\n  \"city\": null,\n  \"cityISO\": null,\n  \"anniversary_date\": null,\n  \"mobile\": null,\n  \"profession\": \"Others\",\n  \"passing_school\": null,\n  \"attend_reunion\": null,\n  \"members_attending_event\": null,\n  \"shirt_size\": null,\n  \"firm_name\": null,\n  \"firmAddress\": null,\n  \"firmSite\": null\n}",
+            "form": []
         },
         "tests": []
     },
@@ -628,6 +606,103 @@
                 }
             ],
             "files": []
+        },
+        "tests": []
+    },
+    {
+        "_id": "6f03308c-531e-4266-bd6d-6fc0d4b7d574",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:8000/api/registration/registration/33/",
+        "url": "localhost:8000/api/registration/registration/33/",
+        "method": "PATCH",
+        "sortNum": 0,
+        "created": "2023-08-08T06:15:57.336Z",
+        "modified": "2023-08-08T06:15:57.336Z",
+        "headers": [],
+        "params": [],
+        "tests": []
+    },
+    {
+        "_id": "6baa0ff3-e9f5-4e2f-97af-15ba5ce99b54",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:8000/api/registration/registration/33/?payment_amt=2000",
+        "url": "localhost:8000/api/registration/registration/33/?payment_amt=2000",
+        "method": "PATCH",
+        "sortNum": 0,
+        "created": "2023-08-08T06:16:13.851Z",
+        "modified": "2023-08-08T06:16:45.875Z",
+        "headers": [],
+        "params": [
+            {
+                "name": "payment_amt",
+                "value": "2000",
+                "isPath": false
+            }
+        ],
+        "body": {
+            "type": "json",
+            "raw": "{\n  \"payment_amt\":2000\n}",
+            "form": []
+        },
+        "tests": []
+    },
+    {
+        "_id": "5e592a29-1596-4a30-bc93-1e6c18e5436f",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:8000/api/registration/registration/33/?bypass_payment=1",
+        "url": "localhost:8000/api/registration/registration/33/?bypass_payment=1",
+        "method": "PATCH",
+        "sortNum": 0,
+        "created": "2023-08-08T06:19:27.192Z",
+        "modified": "2023-08-08T06:19:49.655Z",
+        "headers": [],
+        "params": [
+            {
+                "name": "bypass_payment",
+                "value": "1",
+                "isPath": false
+            }
+        ],
+        "tests": []
+    },
+    {
+        "_id": "0482109f-c3d9-467f-b442-3ee202250dba",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:8000/api/registration/registration/",
+        "url": "localhost:8000/api/registration/registration/",
+        "method": "POST",
+        "sortNum": 0,
+        "created": "2023-08-08T08:02:36.628Z",
+        "modified": "2023-08-08T09:43:35.202Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n  \"razorpay_payment_id\": \"pay_ML5kX1S8FYnjFh\",\n  \"razorpay_order_id\": \"order_ML5joiAkirhxLG\",\n  \"razorpay_signature_id\": \"6b523fecf9039bce662a29a50c5ca0d5d0e0cb2dad76dd84009276830a33fe6e\",\n  \"guest\": [],\n  \"first_name\": \"AMit\",\n  \"last_name\": \"Patel\",\n  \"image\": null,\n  \"email\": \"amitv9493@gmail.com\",\n  \"dob\": null,\n  \"address\": null,\n  \"country\": null,\n  \"countryISO\": null,\n  \"state\": null,\n  \"stateISO\": null,\n  \"city\": null,\n  \"cityISO\": null,\n  \"anniversary_date\": null,\n  \"mobile\": null,\n  \"profession\": \"Others\",\n  \"passing_school\": null,\n  \"attend_reunion\": null,\n  \"members_attending_event\": null,\n  \"shirt_size\": null,\n  \"firm_name\": null,\n  \"firmAddress\": null,\n  \"firmSite\": null\n}",
+            "form": []
+        },
+        "tests": []
+    },
+    {
+        "_id": "46998a56-0188-4067-a20d-a1f2b2a586b9",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:8000/api/registration/registration/89/",
+        "url": "localhost:8000/api/registration/registration/89/",
+        "method": "PATCH",
+        "sortNum": 0,
+        "created": "2023-08-08T10:10:24.800Z",
+        "modified": "2023-08-08T10:12:35.410Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n  \"razorpay_payment_id\": \"pay_ML5kX1S8FYnjFh\",\n  \"razorpay_order_id\": \"order_ML5joiAkirhxLG\",\n  \"razorpay_signature_id\": \"6b523fecf9039bce662a29a50c5ca0d5d0e0cb2dad76dd84009276830a33fe6e\",\n  \"guest\": [\n    {\n      \"name\": \"Mom\",\n      \"event\": [1],\n      \"registration\": 89\n    }\n  ],\n  \"first_name\": \"AMit\",\n  \"last_name\": \"Patel\",\n  \"image\": null,\n  \"email\": \"amitv9493@gmail.com\",\n  \"dob\": null,\n  \"address\": null,\n  \"country\": null,\n  \"countryISO\": null,\n  \"state\": null,\n  \"stateISO\": null,\n  \"city\": null,\n  \"cityISO\": null,\n  \"anniversary_date\": null,\n  \"mobile\": null,\n  \"profession\": \"Others\",\n  \"passing_school\": null,\n  \"attend_reunion\": null,\n  \"members_attending_event\": null,\n  \"shirt_size\": null,\n  \"firm_name\": null,\n  \"firmAddress\": null,\n  \"firmSite\": null,\n  \"payment_amt\":8000,\n  \"event\":[]\n}",
+            "form": []
         },
         "tests": []
     }

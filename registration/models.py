@@ -100,7 +100,7 @@ class Registration(models.Model):
     )
     firmAddress = models.TextField(_("Firm Name"), null=True, blank=True)
     firmSite = models.CharField(_("Firm Site"), max_length=50, null=True, blank=True)
-    
+
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
@@ -141,6 +141,7 @@ class Payment(models.Model):
     payment_success = models.BooleanField(default=False)
     payment_amt = models.PositiveIntegerField(null=True, blank=True)
     payment_date = models.DateTimeField(auto_now_add=True)
+    receipt = models.FileField(upload_to="media", null=True, blank=True)
 
 
 class Reference(models.Model):

@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.core.mail import EmailMultiAlternatives
-from .models import Registration, Event
+from .models import Registration, Event, Payment
 from django.conf import settings
 from django.template.loader import render_to_string, get_template
 from django.conf import settings
@@ -9,71 +9,56 @@ from django.db import transaction
 from io import BytesIO
 import xhtml2pdf.pisa as pisa
 from django.conf import settings
-
+from django.core.files import File
 
 from django.core.exceptions import ValidationError
 
 
-# # @receiver(post_save, sender=Registration)
-# @receiver(m2m_changed, sender=Registration.event.through)
-# def send_email_on_save(sender, instance, action, **kwargs):
-#     # if created:
-#     if action == 'post_add':
-#         email_subject, from_email, to = (
-#             "Confirmation Email",
-#             settings.EMAIL_HOST_USER,
-#             instance.email,
-#         )
-        
-#         events = list(Event.objects.filter(registration= instance.id).values_list("event_name", flat=True))
-#         events = ", ".join(x for x in events)
-#         # print(events)
-        
-#         # print([i.event_name for i in instance.regis])
-#         context = {
-#             "payment_date": instance.payment_date,
-#             "amt": instance.payment_amount,
-#             "email": instance.email,
-#             "transactionID": instance.payment_transaction_id,
-#             "event": events,
-#             "date": instance.date_created,
-#         }
+# @receiver(post_save, sender=Registration)
+def send_email_on_save(instance, created, *args, **kwargs):
+    if created:
+        email_subject, from_email, to = (
+            "Confirmation Email",
+            settings.EMAIL_HOST_USER,
+            instance.registration.email,
+        )
 
-#         html = get_template("registration/email.html").render(context=context)
-#         result = BytesIO()
-#         pdf = pisa.pisaDocument(
-#             BytesIO(html.encode("UTF-8")),
-#             result,
-#         )
-#         pdf = result.getvalue()
-#         filename = "receipt"+".pdf"
+        guest_list = kwargs.get("guest_list", None)
+        print(guest_list)
 
-#         email = EmailMultiAlternatives(
-#             email_subject,
-#             "receipt generated. Plase find attached with this email",
-#             from_email,
-#             [to, "Baavadodara@gmail.com"],
-#         )
+    event = ", ".join(i.__str__() for i in instance.event.all())
+    context = {
+        "email": instance.registration.email,
+        "date": instance.registration.date_created,
+        "payment_date": instance.payment_date,
+        "transactionID": instance.razorpay_order_id,
+        "event": event,
+        "amt": instance.payment_amt,
+        "guest_list": guest_list,
+    }
 
-#         email.mixed_subtype = "related"
-#         # img_dir = os.path.join(settings.REAL_BASE_DIR, "static", "logo.jpeg")
+    html = get_template("registration/email.html").render(context=context)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(
+        BytesIO(html.encode("UTF-8")),
+        result,
+    )
+    pdf = result.getvalue()
+    filename = "receipt" + ".pdf"
+    pdf_file = File(BytesIO(pdf), name=filename)
 
-#         # # file_path = os.path.join(img_dir)
-#         # image = "logo.jpeg"
-#         # with open(img_dir, "rb") as f:
-#         #     img = MIMEImage(f.read())
-#         #     img.add_header("Content-ID", "<{name}>".format(name=image))
-#         #     img.add_header("Content-Disposition", "inline", filename=image)
+    instance.receipt.save(filename, pdf_file)
+    print(
+        to,
+    )
+    email = EmailMultiAlternatives(
+        email_subject,
+        "receipt generated. Plase find attached with this email",
+        from_email,
+        [to, "Baavadodara@gmail.com"],
+    )
 
-#         # email.attach(img)
+    email.mixed_subtype = "related"
 
-#         # EmailThread(email).start()
-
-#         # email.attach_alternative(html, "text/html")
-#         email.attach(filename, pdf, "application/pdf")
-#         # try:
-#             # with transaction.atomic():
-#         email.send(fail_silently=False)
-#         # instance.save()
-#         # except Exception as e:
-#             # raise ValidationError("Error sending email. Please try again later.")
+    email.attach(filename, pdf, "application/pdf")
+    # email.send(fail_silently=False)
