@@ -98,6 +98,9 @@ class Registration(models.Model):
     firm_name = models.CharField(
         _("Name of Firm if Any"), max_length=100, null=True, blank=True
     )
+    firmAddress = models.TextField(_("Firm Name"), null=True, blank=True)
+    firmSite = models.CharField(_("Firm Site"), max_length=50, null=True, blank=True)
+    
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
