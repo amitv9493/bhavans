@@ -96,7 +96,8 @@ class RegistrationModelViewSet(ModelViewSet):
                 payment_serializer.save()
 
                 send_email_on_save(instance=payment_serializer.instance, created=True)
-        return super().create(request, *args, **kwargs)
+
+            return response
 
     def partial_update(self, request, *args, **kwargs):
         bypass_payment = request.query_params.get("bypass_payment", None)
@@ -142,7 +143,7 @@ class RegistrationModelViewSet(ModelViewSet):
                         guest_list=guests,
                     )
 
-            return response
+                    return response
 
         return super().update(request, *args, **kwargs)
 
@@ -291,3 +292,11 @@ def ReferenceGETView(request, pk):
         data = Reference.objects.filter(registration=pk)
         serializer = ReferenceSerializer(data, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+from rest_framework.generics import ListAPIView
+
+
+class payment(ListAPIView):
+    serializer_class = PaymentSerializer
+    queryset = Payment.objects.all()
