@@ -314,6 +314,6 @@ def UserView(request, year):
     queryset = Registration.objects.filter(passing_school=year).annotate(
         full_name = Concat(F('first_name'),
                            Value(' '),
-                           F('last_name'))).values("full_name","passing_school")
+                           F('last_name'))).values("full_name","passing_school","country")
     
     return Response(queryset, status=status.HTTP_200_OK)
