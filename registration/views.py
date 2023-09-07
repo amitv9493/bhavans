@@ -304,6 +304,40 @@ class payment(ListAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
 
+from django.db.models.functions import Concat
+
+from django.db.models import F, Value
+from django.db import models
+class payment(ListAPIView):
+    serializer_class = PaymentSerializer
+    queryset = Payment.objects.all()
+
+@api_view(["GET"])
+def UserView(request, year):
+    queryset = Registration.objects.filter(passing_school=year).annotate(
+        full_name = Concat(F('first_name'),
+                           Value(' '),
+                           F('last_name'))).values("full_name","passing_school","country")
+    
+    return Response(queryset, status=status.HTTP_200_OK)
+
+from django.db.models.functions import Concat
+
+from django.db.models import F, Value
+from django.db import models
+class payment(ListAPIView):
+    serializer_class = PaymentSerializer
+    queryset = Payment.objects.all()
+
+@api_view(["GET"])
+def UserView(request, year):
+    queryset = Registration.objects.filter(passing_school=year).annotate(
+        full_name = Concat(F('first_name'),
+                           Value(' '),
+                           F('last_name'))).values("full_name","passing_school","country")
+    
+    return Response(queryset, status=status.HTTP_200_OK)
+
 @api_view(["GET"])
 def UserView(request, year):
     queryset = Registration.objects.filter(passing_school=year).annotate(

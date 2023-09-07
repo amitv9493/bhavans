@@ -20,6 +20,6 @@ urlpatterns = [
     path("payment/complete/", PaymentView.as_view()),
     path("refer/", ReferenceCreateView),
     path("refer/<int:pk>/", ReferenceGETView),
-    path("users/<int:year>/",UserView,name="customUsers"),
-    path("reg-new/",RegistrationNewView.as_view()),
+    path("custom-users/<int:year>/",UserView,name="customUsers"),
+
 ] + router.urls
