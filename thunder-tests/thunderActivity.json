@@ -673,16 +673,16 @@
         "colId": "history",
         "containerId": "",
         "name": "localhost:8000/api/registration/registration/",
-        "url": "localhost:8000/api/registration/registration/",
-        "method": "POST",
+        "url": "localhost:8000/api/registration/registration/98/",
+        "method": "GET",
         "sortNum": 0,
         "created": "2023-08-08T08:02:36.628Z",
-        "modified": "2023-08-08T09:43:35.202Z",
+        "modified": "2023-08-09T11:38:41.729Z",
         "headers": [],
         "params": [],
         "body": {
             "type": "json",
-            "raw": "{\n  \"razorpay_payment_id\": \"pay_ML5kX1S8FYnjFh\",\n  \"razorpay_order_id\": \"order_ML5joiAkirhxLG\",\n  \"razorpay_signature_id\": \"6b523fecf9039bce662a29a50c5ca0d5d0e0cb2dad76dd84009276830a33fe6e\",\n  \"guest\": [],\n  \"first_name\": \"AMit\",\n  \"last_name\": \"Patel\",\n  \"image\": null,\n  \"email\": \"amitv9493@gmail.com\",\n  \"dob\": null,\n  \"address\": null,\n  \"country\": null,\n  \"countryISO\": null,\n  \"state\": null,\n  \"stateISO\": null,\n  \"city\": null,\n  \"cityISO\": null,\n  \"anniversary_date\": null,\n  \"mobile\": null,\n  \"profession\": \"Others\",\n  \"passing_school\": null,\n  \"attend_reunion\": null,\n  \"members_attending_event\": null,\n  \"shirt_size\": null,\n  \"firm_name\": null,\n  \"firmAddress\": null,\n  \"firmSite\": null\n}",
+            "raw": "{\n  \"razorpay_payment_id\": \"pay_ML5kX1S8FYnjFh\",\n  \"razorpay_order_id\": \"order_ML5joiAkirhxLG\",\n  \"razorpay_signature_id\": \"6b523fecf9039bce662a29a50c5ca0d5d0e0cb2dad76dd84009276830a33fe6e\",\n  \"guest\": [],\n  \"first_name\": \"Pritee\",\n  \"last_name\": \"Patel\",\n  \"image\": null,\n  \"email\": \"amitv9493@gmail.com\",\n  \"dob\": null,\n  \"address\": null,\n  \"country\": null,\n  \"countryISO\": null,\n  \"state\": null,\n  \"stateISO\": null,\n  \"city\": null,\n  \"cityISO\": null,\n  \"anniversary_date\": null,\n  \"mobile\": null,\n  \"profession\": \"Others\",\n  \"passing_school\": null,\n  \"attend_reunion\": null,\n  \"members_attending_event\": null,\n  \"shirt_size\": null,\n  \"firm_name\": null,\n  \"firmAddress\": null,\n  \"firmSite\": null\n}",
             "form": []
         },
         "tests": []

@@ -21,5 +21,6 @@ urlpatterns = [
     path("refer/", ReferenceCreateView),
     path("refer/<int:pk>/", ReferenceGETView),
     path("custom-users/<int:year>/",UserView,name="customUsers"),
+    path("reg-new/", RegistrationNewView.as_view()),
 
 ] + router.urls

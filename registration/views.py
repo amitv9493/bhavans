@@ -15,13 +15,11 @@ from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework import status
 from payment.main import RazorpayClient
-from django.db.models.signals import post_save
 from .signals import *
 from django.db.models import Sum
 from django.db.models.functions import Concat
 
 from django.db.models import F, Value
-from django.db import models
 rz = RazorpayClient()
 
 
@@ -307,7 +305,6 @@ class payment(ListAPIView):
 from django.db.models.functions import Concat
 
 from django.db.models import F, Value
-from django.db import models
 class payment(ListAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
@@ -324,7 +321,6 @@ def UserView(request, year):
 from django.db.models.functions import Concat
 
 from django.db.models import F, Value
-from django.db import models
 class payment(ListAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
