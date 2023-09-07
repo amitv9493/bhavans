@@ -18,7 +18,10 @@ from payment.main import RazorpayClient
 from django.db.models.signals import post_save
 from .signals import *
 from django.db.models import Sum
+from django.db.models.functions import Concat
 
+from django.db.models import F, Value
+from django.db import models
 rz = RazorpayClient()
 
 
@@ -300,3 +303,20 @@ from rest_framework.generics import ListAPIView
 class payment(ListAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
+
+@api_view(["GET"])
+def UserView(request, year):
+    queryset = Registration.objects.filter(passing_school=year).annotate(
+        full_name = Concat(F('first_name'),
+                           Value(' '),
+                           F('last_name'))).values("full_name","passing_school")
+    
+    return Response(queryset, status=status.HTTP_200_OK)
+
+
+from rest_framework import generics
+class RegistrationNewView(generics.CreateAPIView):
+    serializer_class = RegistrationSerializer
+    permission_classes = []
+    authentication_classes = []
+    queryset = Registration.objects.all()
