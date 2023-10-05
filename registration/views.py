@@ -342,7 +342,8 @@ def UserView(request, year):
                            F('last_name'))).values("full_name","passing_school")
     
     return Response(queryset, status=status.HTTP_200_OK)
-
+    
+################################################################
 
 from rest_framework import generics
 class RegistrationNewView(generics.CreateAPIView):
@@ -350,3 +351,33 @@ class RegistrationNewView(generics.CreateAPIView):
     permission_classes = []
     authentication_classes = []
     queryset = Registration.objects.all()
+    
+    
+    def perform_create(self, serializer):
+        image = self.request.data.get("image")
+        transaction_id = self.request.data.get("transaction_id","NULL")
+        event = Event.objects.get(event_name__startswith = 'Life')
+        instance = serializer.save()
+        payment = Payment.objects.create(registration=instance,receipt=image,razorpay_payment_id=transaction_id, payment_amt=2000)
+        payment.event.add(event)
+        payment.save()
+        return instance 
+    
+        
+class RegistrationPatchView(generics.RetrieveUpdateAPIView):
+    serializer_class = RegistrationSerializer
+    permission_classes = []
+    authentication_classes = []
+    queryset = Registration.objects.all()
+    
+    def perform_update(self, serializer):
+        image = self.request.data.get("image")
+        transaction_id = self.request.data.get("transaction_id","NULL")
+        event = Event.objects.get(event_name__startswith = 'Ex')
+        instance = serializer.save()
+        payment = Payment.objects.create(registration=instance,receipt=image,razorpay_payment_id=transaction_id, payment_amt=7000)
+        payment.event.add(event)
+        payment.save()
+        return instance
+        
+        

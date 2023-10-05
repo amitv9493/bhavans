@@ -1,7 +1,11 @@
 from typing import Iterable, Optional
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+import qrcode
+from django.core.files import File
+from django.core.mail import EmailMessage
 import datetime
 
 # Create your models here.
@@ -59,6 +63,7 @@ class Registration(models.Model):
     image = models.ImageField(upload_to="media", null=True, blank=True)
     email = models.EmailField(max_length=254, null=True, blank=True)
     dob = models.DateField(null=True, blank=True)
+   
 
     # Address info
     address = models.TextField(null=True, blank=True)
@@ -100,9 +105,12 @@ class Registration(models.Model):
     )
     firmAddress = models.TextField(_("Firm Name"), null=True, blank=True)
     firmSite = models.CharField(_("Firm Site"), max_length=50, null=True, blank=True)
-    
+   
     transaction_id = models.CharField(max_length=100, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(null=True, blank=True)
+    voucher_no = models.CharField(max_length=100, null=True, blank=True)
+    barcode = models.ImageField(upload_to="media", blank=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
@@ -110,7 +118,24 @@ class Registration(models.Model):
     @property
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
+        
+#####################################################################        
 
+@receiver(post_save, sender=Registration)
+
+def save_qr_code(sender, created , instance, **kwargs):
+    if created:
+        # number =instance.phone_number
+        code = qrcode.make()
+        code.save("code.png")
+
+        with open("code.png", 'rb') as file:
+            image = File(file)
+            # {instance.phone_number}
+            instance.barcode.save(f'{instance}.png', image)
+            instance.save()
+            
+#####################################################################
 
 class Guest(models.Model):
     name = models.CharField(max_length=255)

@@ -32,6 +32,9 @@ class RegistrationAdmin(admin.ModelAdmin):
         "shirt_size",
         "firm_name",
         "date_created",
+        'date',
+        'voucher_no',
+        'barcode',
     )
     list_filter = (
         "dob",
