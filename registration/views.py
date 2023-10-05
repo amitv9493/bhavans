@@ -18,8 +18,8 @@ from payment.main import RazorpayClient
 from .signals import *
 from django.db.models import Sum
 from django.db.models.functions import Concat
-
 from django.db.models import F, Value
+from rest_framework import generics
 rz = RazorpayClient()
 
 
@@ -318,10 +318,8 @@ def UserView(request, year):
     
     return Response(queryset, status=status.HTTP_200_OK)
 
-from django.db.models.functions import Concat
 
-from django.db.models import F, Value
-class payment(ListAPIView):
+class payment(generics.ListCreateAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
 
@@ -369,7 +367,7 @@ class RegistrationPatchView(generics.RetrieveUpdateAPIView):
         transaction_id = self.request.data.get("transaction_id","NULL")
         event = Event.objects.get(event_name__startswith = 'Ex')
         instance = serializer.save()
-        payment = Payment.objects.create(registration=instance,receipt=image,registration_id=transaction_id)
+        payment = Payment.objects.create(registration=instance,receipt=image,transaction_id=transaction_id)
         payment.event.add(event)
         payment.save()
         return instance
