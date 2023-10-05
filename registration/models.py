@@ -24,6 +24,7 @@ class Event(models.Model):
 
 
 class Registration(models.Model):
+
     class ChoseEvent(models.TextChoices):
         OPTION1 = "lifetime_membership", "Life Time Membership (INR 2000)"
         OPTION2 = "ex_bhavanites_reunion", "Ex Bhavanites Reunion (INR 7000)"
@@ -60,7 +61,6 @@ class Registration(models.Model):
 
     first_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
-    image = models.ImageField(upload_to="media", null=True, blank=True)
     email = models.EmailField(max_length=254, null=True, blank=True)
     dob = models.DateField(null=True, blank=True)
    
@@ -105,8 +105,10 @@ class Registration(models.Model):
     )
     firmAddress = models.TextField(_("Firm Name"), null=True, blank=True)
     firmSite = models.CharField(_("Firm Site"), max_length=50, null=True, blank=True)
-   
+
+    image = models.ImageField(upload_to="media", null=True, blank=True)
     transaction_id = models.CharField(max_length=100, null=True, blank=True)
+    
     date_created = models.DateTimeField(auto_now_add=True)
     date = models.DateField(null=True, blank=True)
     voucher_no = models.CharField(max_length=100, null=True, blank=True)
@@ -160,12 +162,7 @@ class Payment(models.Model):
         related_name="payment",
     )
     event = models.ManyToManyField(Event, null=True, blank=True)
-    razorpay_payment_id = models.CharField(max_length=100)
-    razorpay_order_id = models.CharField(max_length=100)
-    razorpay_signature_id = models.CharField(max_length=100)
-
-    payment_success = models.BooleanField(default=False)
-    payment_amt = models.PositiveIntegerField(null=True, blank=True)
+    registration_id = models.CharField(max_length=200, null=True, blank=True)
     payment_date = models.DateTimeField(auto_now_add=True)
     receipt = models.FileField(upload_to="media", null=True, blank=True)
 

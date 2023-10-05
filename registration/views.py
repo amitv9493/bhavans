@@ -358,7 +358,7 @@ class RegistrationNewView(generics.CreateAPIView):
         transaction_id = self.request.data.get("transaction_id","NULL")
         event = Event.objects.get(event_name__startswith = 'Life')
         instance = serializer.save()
-        payment = Payment.objects.create(registration=instance,receipt=image,razorpay_payment_id=transaction_id, payment_amt=2000)
+        payment = Payment.objects.create(registration=instance,receipt=image,registration_id=transaction_id)
         payment.event.add(event)
         payment.save()
         return instance 
@@ -375,7 +375,7 @@ class RegistrationPatchView(generics.RetrieveUpdateAPIView):
         transaction_id = self.request.data.get("transaction_id","NULL")
         event = Event.objects.get(event_name__startswith = 'Ex')
         instance = serializer.save()
-        payment = Payment.objects.create(registration=instance,receipt=image,razorpay_payment_id=transaction_id, payment_amt=7000)
+        payment = Payment.objects.create(registration=instance,receipt=image,registration_id=transaction_id)
         payment.event.add(event)
         payment.save()
         return instance

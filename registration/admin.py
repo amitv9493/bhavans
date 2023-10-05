@@ -53,7 +53,7 @@ class GuestAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ["registration", "payment_success", "payment_amt"]
+    list_display = ["registration", "payment_date"]
     list_filter = ["registration"]
 
 
