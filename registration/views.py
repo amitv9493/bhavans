@@ -363,13 +363,23 @@ class RegistrationPatchView(generics.RetrieveUpdateAPIView):
     queryset = Registration.objects.all()
     
     def perform_update(self, serializer):
-        image = self.request.data.get("image")
-        transaction_id = self.request.data.get("transaction_id","NULL")
-        event = Event.objects.get(event_name__startswith = 'Ex')
+        image = self.request.data.get("image",None)
+        transaction_id = self.request.data.get("transaction_id",None)
+        event_id = self.request.data.get("event",None)
         instance = serializer.save()
-        payment = Payment.objects.create(registration=instance,receipt=image,transaction_id=transaction_id)
-        payment.event.add(event)
-        payment.save()
+        if image and transaction_id and event_id:
+            event = Event.objects.get(id=event_id)
+            Payment.objects.create(registration=instance,
+                                             receipt=image,transaction_id=transaction_id,
+                                             event = event,
+                                             )
+
         return instance
         
-        
+
+class PaymentReceiptView(generics.CreateAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+    
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)

@@ -7,8 +7,6 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         fields = "__all__"
-
-
 class GuestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Guest
@@ -25,7 +23,7 @@ class EventSerializer(serializers.ModelSerializer):
 class RegistrationSerializer(serializers.ModelSerializer):
     guest = GuestSerializer(many=True, required=False)
     payment = PaymentSerializer(many=True, read_only=True)
-
+    event = serializers.PrimaryKeyRelatedField(queryset = Event.objects.all(), required=False, write_only=True)
     def create(self, validated_data):
         try:
             guest_data = validated_data.pop("guest")
@@ -40,7 +38,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         guest_data = validated_data.pop("guest", [])
-
+        image = validated_data.pop("image", None)
+        transaction_id = validated_data.pop("transaction_id", None)
+        
         for i in guest_data:
             guest = Guest.objects.create(name=i["name"], registration=i["registration"])
             guest.event.set(i["event"])
