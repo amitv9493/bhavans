@@ -24,24 +24,6 @@ class Event(models.Model):
 
 
 class Registration(models.Model):
-
-    class ChoseEvent(models.TextChoices):
-        OPTION1 = "lifetime_membership", "Life Time Membership (INR 2000)"
-        OPTION2 = "ex_bhavanites_reunion", "Ex Bhavanites Reunion (INR 7000)"
-        OPTION3 = "guest_attending_reunion", "Guest Attending Reunion (INR 5000)"
-        OPTION4 = (
-            "guest_attending_1st_day",
-            "Guest Attending 1st Day Full Function (INR 3500)",
-        )
-        OPTION5 = (
-            "guest_attending_2nd_day",
-            "Guest Attending 2nd Day Function (INR 1500)",
-        )
-        OPTION6 = (
-            "guest_attending_gala_dinner",
-            "Guest Attending only Gala Dinner (INR 2000)",
-        )
-
     class ProfessionChoice(models.TextChoices):
         option1 = "Businessman", "Businessman"
         option2 = "Entrepreneur", "Entrepreneur"
@@ -162,11 +144,12 @@ class Payment(models.Model):
         related_name="payment",
     )
     event = models.ManyToManyField(Event, null=True, blank=True)
-    registration_id = models.CharField(max_length=200, null=True, blank=True)
     payment_date = models.DateTimeField(auto_now_add=True)
     receipt = models.FileField(upload_to="media", null=True, blank=True)
+    transaction_id = models.CharField(max_length=100)
 
-
+    def __str__(self):
+        return (f"{self.registration} {self.transaction_id}")
 class Reference(models.Model):
     registration = models.ForeignKey(
         Registration, verbose_name="Reffered By", on_delete=models.CASCADE

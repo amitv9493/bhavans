@@ -354,15 +354,9 @@ class RegistrationNewView(generics.CreateAPIView):
     
     
     def perform_create(self, serializer):
-        image = self.request.data.get("image")
-        transaction_id = self.request.data.get("transaction_id","NULL")
-        event = Event.objects.get(event_name__startswith = 'Life')
-        instance = serializer.save()
-        payment = Payment.objects.create(registration=instance,receipt=image,registration_id=transaction_id)
-        payment.event.add(event)
-        payment.save()
-        return instance 
-    
+        if serializer.validated_data.get("transaction_id") is not None:
+            serializer.validated_data["attend_reunion"] = True
+        return serializer.save()
         
 class RegistrationPatchView(generics.RetrieveUpdateAPIView):
     serializer_class = RegistrationSerializer
