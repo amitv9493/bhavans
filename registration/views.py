@@ -351,10 +351,7 @@ class RegistrationNewView(generics.CreateAPIView):
     queryset = Registration.objects.all()
     
     
-    def perform_create(self, serializer):
-        if serializer.validated_data.get("transaction_id") is not None:
-            serializer.validated_data["attend_reunion"] = True
-        return serializer.save()
+
         
 class RegistrationPatchView(generics.RetrieveUpdateAPIView):
     serializer_class = RegistrationSerializer
@@ -362,24 +359,18 @@ class RegistrationPatchView(generics.RetrieveUpdateAPIView):
     authentication_classes = []
     queryset = Registration.objects.all()
     
-    def perform_update(self, serializer):
-        image = self.request.data.get("image",None)
-        transaction_id = self.request.data.get("transaction_id",None)
-        event_id = self.request.data.get("event",None)
-        instance = serializer.save()
-        if image and transaction_id and event_id:
-            event = Event.objects.get(id=event_id)
-            Payment.objects.create(registration=instance,
-                                             receipt=image,transaction_id=transaction_id,
-                                             event = event,
-                                             )
 
-        return instance
-        
 
-class PaymentReceiptView(generics.CreateAPIView):
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
+class PaymentReceiptView(APIView):
     
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
+    def post(self, request, format=None):
+        serializer = CustomPaymentSerializer(data=request.data)
+        
+        if serializer.is_valid(raise_exception=True):
+            created_instances  = serializer.save()
+            serialized_data = PaymentSerializer(created_instances, many=True).data
+            response_data = {
+                'message': 'Payment(s) created successfully',
+                'data': serialized_data  # Include the serialized Payment instances
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
