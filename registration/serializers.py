@@ -7,6 +7,18 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         fields = "__all__"
+        
+class PaymentRetrieveSerializer(serializers.ModelSerializer):
+    event = serializers.StringRelatedField()
+    class Meta:
+        model = Payment
+        fields = [
+            "event",
+            "transaction_id",
+            "receipt",
+            "payment_date",
+            
+        ]
 
 
 class GuestSerializer(serializers.ModelSerializer):

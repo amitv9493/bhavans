@@ -374,3 +374,22 @@ class PaymentReceiptView(APIView):
                 'data': serialized_data  # Include the serialized Payment instances
             }
             return Response(response_data, status=status.HTTP_201_CREATED)
+        
+
+from django.db.models import Count
+class PaymentRetrieveView(APIView):
+    
+    def get(self, request, pk, format=None):
+        try:
+            queryset = Payment.objects.filter(registration=pk).annotate(total=Count("id"))
+        except Payment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = PaymentRetrieveSerializer(queryset, many=True)
+        data = {
+          "total": queryset.count(),
+          "Payment_details": serializer.data,
+        }
+        return Response(
+            
+            data, status=status.HTTP_200_OK)

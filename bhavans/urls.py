@@ -11,6 +11,7 @@ urlpatterns = [
     path("api/registration/", include("registration.urls")),
     path("payments/", payment.as_view()),
     path("create/payment-record/", PaymentReceiptView.as_view()),
+    path("payments/<int:pk>/", PaymentRetrieveView.as_view()),
     # path("payment/<int:registration_id>/",PaymentView.as_view()),
 ]
 
