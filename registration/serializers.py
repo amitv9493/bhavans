@@ -126,7 +126,6 @@ class CustomPaymentSerializer(serializers.Serializer):
         return_data = []
         registration = validated_data.pop("registration")
         transaction_id = validated_data.pop("transaction_id", None)
-        # lifetime_membership = validated_data.pop("lifetime_membership", None)
         
         for key, value in validated_data.items():
             if key == "mega_reunion":
@@ -174,13 +173,13 @@ class CustomPaymentSerializer(serializers.Serializer):
             
                 return_data.append(instance)
                 
-            if key == "lifetime_membership" and value is not None and transaction_id is not None:
+            if key == "lifetime_membership" and value is not None:
                 event = Event.objects.get(event_name__icontains = "Life time")
                 
                 instance = Payment.objects.create(receipt=value,
                                                 registration=registration,
                                                 event=event,
-                                                transaction_id=transaction_id)
+                                                )
             
                 return_data.append(instance)
         
