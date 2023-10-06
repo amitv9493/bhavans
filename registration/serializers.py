@@ -118,13 +118,15 @@ class CustomPaymentSerializer(serializers.Serializer):
     Full1dayFunction = serializers.ImageField(required=False)
     Day2Function = serializers.ImageField(required=False)
     GalaDinner = serializers.ImageField(required=False)
-    registration = serializers.PrimaryKeyRelatedField(queryset=Registration.objects.all(), required=True, write_only=True)
+    memberId = serializers.PrimaryKeyRelatedField(queryset=Registration.objects.all(), required=True, write_only=True)
     transaction_id = serializers.CharField(required=False, write_only=True)
-    
+    receipt1 = serializers.ImageField(required=False)
+    receipt2 = serializers.ImageField(required=False)
+    receipt3 = serializers.ImageField(required=False)
     
     def create(self, validated_data):
         return_data = []
-        registration = validated_data.pop("registration")
+        memberId = validated_data.pop("memberId")
         transaction_id = validated_data.pop("transaction_id", None)
         
         for key, value in validated_data.items():
@@ -132,7 +134,7 @@ class CustomPaymentSerializer(serializers.Serializer):
                 event = Event.objects.get(event_name = "Ex Bhavanites Reunion")
                 
                 instance = Payment.objects.create(receipt=value,
-                                                registration=registration,
+                                                registration=memberId,
                                                 event=event)
             
                 return_data.append(instance)
@@ -141,7 +143,7 @@ class CustomPaymentSerializer(serializers.Serializer):
                 event = Event.objects.get(event_name__icontains = "Guest")
                 
                 instance = Payment.objects.create(receipt=value,
-                                                registration=registration,
+                                                registration=memberId,
                                                 event=event)
             
                 return_data.append(instance)
@@ -150,7 +152,7 @@ class CustomPaymentSerializer(serializers.Serializer):
                 event = Event.objects.get(event_name__icontains = "Full")
                 
                 instance = Payment.objects.create(receipt=value,
-                                                registration=registration,
+                                                registration=memberId,
                                                 event=event)
             
                 return_data.append(instance)
@@ -159,7 +161,7 @@ class CustomPaymentSerializer(serializers.Serializer):
                 event = Event.objects.get(event_name__icontains = "2nd Day")
                 
                 instance = Payment.objects.create(receipt=value,
-                                                registration=registration,
+                                                registration=memberId,
                                                 event=event)
             
                 return_data.append(instance)
@@ -168,7 +170,7 @@ class CustomPaymentSerializer(serializers.Serializer):
                 event = Event.objects.get(event_name__icontains = "Gala")
                 
                 instance = Payment.objects.create(receipt=value,
-                                                registration=registration,
+                                                registration=memberId,
                                                 event=event)
             
                 return_data.append(instance)
@@ -177,10 +179,15 @@ class CustomPaymentSerializer(serializers.Serializer):
                 event = Event.objects.get(event_name__icontains = "Life time")
                 
                 instance = Payment.objects.create(receipt=value,
-                                                registration=registration,
+                                                registration=memberId,
                                                 event=event,
                                                 )
             
                 return_data.append(instance)
-        
+            
+            else:
+                instance = Payment.objects.create(registration = memberId, receipt=value )
+                
+                return_data.append(instance)  
+                  
         return return_data
