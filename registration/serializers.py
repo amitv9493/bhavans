@@ -18,6 +18,7 @@ class PaymentRetrieveSerializer(serializers.ModelSerializer):
             "transaction_id",
             "receipt",
             "payment_date",
+            "tag"
             
         ]
 
@@ -80,7 +81,7 @@ class GuestGETSerializer(serializers.ModelSerializer):
 
 class RegistrationGETSerializer(serializers.ModelSerializer):
     guest = GuestGETSerializer(many=True)
-    payment = PaymentSerializer(many=True, read_only=True)
+    payment = PaymentRetrieveSerializer(many=True, read_only=True)
 
     class Meta:
         model = Registration

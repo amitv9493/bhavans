@@ -1,11 +1,9 @@
-from typing import Iterable, Optional
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 import qrcode
 from django.core.files import File
-from django.core.mail import EmailMessage
 import datetime
 
 # Create your models here.
@@ -89,7 +87,6 @@ class Registration(models.Model):
     firmSite = models.CharField(_("Firm Site"), max_length=50, null=True, blank=True)
 
     image = models.ImageField(upload_to="media", null=True, blank=True)
-    transaction_id = models.CharField(max_length=100, null=True, blank=True)
     
     date_created = models.DateTimeField(auto_now_add=True)
     date = models.DateField(null=True, blank=True)
@@ -99,9 +96,7 @@ class Registration(models.Model):
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
 
-    @property
-    def get_full_name(self):
-        return f"{self.first_name} {self.last_name}"
+
         
 #####################################################################        
 
@@ -149,6 +144,7 @@ class Payment(models.Model):
 
     def __str__(self):
         return (f"{self.registration} {self.transaction_id}")
+    
 class Reference(models.Model):
     registration = models.ForeignKey(
         Registration, verbose_name="Reffered By", on_delete=models.CASCADE
