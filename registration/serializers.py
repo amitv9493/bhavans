@@ -96,21 +96,22 @@ class ReferenceSerializer(serializers.ModelSerializer):
         model = Reference
         fields = "__all__"
 
+from django.core.files.base import ContentFile
 
 class CustomPaymentSerializer(serializers.Serializer):
-    ex_bhavanites_reunion = serializers.ImageField(required=False)
-    life_time_membership = serializers.ImageField(required=False)
-    guest_reunion = serializers.ImageField(required=False)
-    day_1st = serializers.ImageField(required=False)
-    day_2nd = serializers.ImageField(required=False)
-    gala_dinner = serializers.ImageField(required=False)
+    ex_bhavanites_reunion = serializers.FileField(required=False)
+    life_time_membership = serializers.FileField(required=False)
+    guest_reunion = serializers.FileField(required=False)
+    day_1st = serializers.FileField(required=False)
+    day_2nd = serializers.FileField(required=False)
+    gala_dinner = serializers.FileField(required=False)
     memberId = serializers.PrimaryKeyRelatedField(
         queryset=Registration.objects.all(), required=True, write_only=True
     )
     transaction_id = serializers.CharField(required=False, write_only=True)
-    receipt1 = serializers.ImageField(required=False)
-    receipt2 = serializers.ImageField(required=False)
-    receipt3 = serializers.ImageField(required=False)
+    receipt1 = serializers.FileField(required=False)
+    receipt2 = serializers.FileField(required=False)
+    receipt3 = serializers.FileField(required=False)
 
     def create(self, validated_data):
         
@@ -200,10 +201,12 @@ class CustomPaymentSerializer(serializers.Serializer):
                 event = Event.objects.get(event_name__icontains=key)
             except Event.DoesNotExist:
                 event = None
-            
-            payment_intance = Payment.objects.get_or_create(registration=memberId, event=event, tag=key)[0]
-            payment_intance.receipt = value
-            payment_intance.save()
-            return_data.append(payment_intance)            
+            payment_instance = Payment.objects.get_or_create(registration=memberId, event=event, tag=key)[0]
+            # content_file = ContentFile(value.read())
+            # print(value)
+            # payment_intance.receipt.save(value.name, content_file, save=True)
+            payment_instance.receipt = value
+            payment_instance.save()
+            return_data.append(payment_instance)            
 
         return return_data
