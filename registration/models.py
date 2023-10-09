@@ -146,8 +146,8 @@ class Payment(models.Model):
     def __str__(self):
         return (f"{self.registration} {self.transaction_id}")
     
-    def save(self, force_insert=False, force_update: bool = False) -> None:            
-        super().save(force_insert, force_update)
+    def save(self) -> None:            
+        super().save()
         if (self.tag) == "ex bhavanites reunion":
             self.registration.attend_reunion = True
             self.registration.save(update_fields=["attend_reunion"])
