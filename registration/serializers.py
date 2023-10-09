@@ -56,8 +56,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         guest_data = validated_data.pop("guest", [])
-        image = validated_data.pop("image", None)
-        transaction_id = validated_data.pop("transaction_id", None)
 
         for i in guest_data:
             guest = Guest.objects.create(name=i["name"], registration=i["registration"])
