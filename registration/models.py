@@ -146,12 +146,12 @@ class Payment(models.Model):
     def __str__(self):
         return (f"{self.registration} {self.transaction_id}")
     
-    def save(self) -> None:            
+    def save(self, *args, **kwargs) -> None:            
         super().save()
         if (self.tag) == "ex bhavanites reunion":
             self.registration.attend_reunion = True
             self.registration.save(update_fields=["attend_reunion"])
-            
+    
 class Reference(models.Model):
     registration = models.ForeignKey(
         Registration, verbose_name="Reffered By", on_delete=models.CASCADE
