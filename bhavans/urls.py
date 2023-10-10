@@ -12,6 +12,8 @@ urlpatterns = [
     path("payments/", payment.as_view()),
     path("create/payment-record/", PaymentReceiptView.as_view()),
     path("payments/<int:pk>/", PaymentRetrieveView.as_view()),
+    path("create/individual-payment/", PaymentIndividualView),
+    path("get/events/", EventView.as_view()),
     # path("payment/<int:registration_id>/",PaymentView.as_view()),
 ]
 

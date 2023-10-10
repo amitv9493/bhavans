@@ -151,7 +151,12 @@ class Payment(models.Model):
         if (self.tag) == "ex bhavanites reunion":
             self.registration.attend_reunion = True
             self.registration.save(update_fields=["attend_reunion"])
-    
+            
+    class Meta:
+    #     constraints = ["unique_together = (registration, event)"]
+        constraints = [
+        models.UniqueConstraint(fields=['registration', 'event'], name="reg-event")
+        ]
 class Reference(models.Model):
     registration = models.ForeignKey(
         Registration, verbose_name="Reffered By", on_delete=models.CASCADE

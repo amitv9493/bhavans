@@ -4,11 +4,11 @@ from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 
 class PaymentSerializer(serializers.ModelSerializer):
-    event = serializers.StringRelatedField()
     class Meta:
         model = Payment
         fields = "__all__"
-        
+
+
 class PaymentRetrieveSerializer(serializers.ModelSerializer):
     event = serializers.StringRelatedField()
     class Meta:
@@ -102,8 +102,8 @@ class CustomPaymentSerializer(serializers.Serializer):
     ex_bhavanites_reunion = serializers.FileField(required=False)
     life_time_membership = serializers.FileField(required=False)
     guest_reunion = serializers.FileField(required=False)
-    day_1st = serializers.FileField(required=False)
-    day_2nd = serializers.FileField(required=False)
+    first_day_full_function = serializers.FileField(required=False)
+    second_day_function = serializers.FileField(required=False)
     gala_dinner = serializers.FileField(required=False)
     memberId = serializers.PrimaryKeyRelatedField(
         queryset=Registration.objects.all(), required=True, write_only=True
@@ -202,9 +202,6 @@ class CustomPaymentSerializer(serializers.Serializer):
             except Event.DoesNotExist:
                 event = None
             payment_instance = Payment.objects.get_or_create(registration=memberId, event=event, tag=key)[0]
-            # content_file = ContentFile(value.read())
-            # print(value)
-            # payment_intance.receipt.save(value.name, content_file, save=True)
             payment_instance.receipt = value
             payment_instance.save()
             return_data.append(payment_instance)            

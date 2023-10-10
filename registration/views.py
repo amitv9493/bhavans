@@ -393,3 +393,61 @@ class PaymentRetrieveView(APIView):
         return Response(
             
             data, status=status.HTTP_200_OK)
+        
+
+@api_view(["POST"])
+def PaymentIndividualView(request):
+    def perform_create():
+        if serializer.validated_data["event"].event_name == "Life Time Membership":
+            
+            serializer.save(tag ="life time membership")
+        
+        elif serializer.validated_data["event"].event_name == "Ex Bhavanites Reunion":
+            serializer.save(tag ="ex bhavanites reunion")
+            
+        elif serializer.validated_data["event"].event_name == "Second Day Function":
+            serializer.save(tag ="second day function")
+            
+        elif serializer.validated_data["event"].event_name == "First Day Full Function":
+            serializer.save(tag ="first day full function")
+            
+        elif serializer.validated_data["event"].event_name == "Gala Dinner":
+            serializer.save(tag ="gala dinner")
+            
+        elif serializer.validated_data["event"].event_name == "Guest Reunion":
+            serializer.save(tag ="guest reunion")
+            
+    try:
+        payment_instance = Payment.objects.get(
+            registration = request.data.get("registration"),
+            event = request.data.get("event")
+            )
+    except:
+        payment_instance = None
+    
+    if payment_instance:
+        serializer = PaymentSerializer(payment_instance, data=request.data, partial=True)
+        
+        if serializer.is_valid(raise_exception=True):
+            perform_create()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    else:
+        serializer = PaymentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            perform_create()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+         
+
+            
+            
+class EventView(generics.ListAPIView):
+    permission_classes = []
+    authentication_classes = []
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    
+    def get_serializer(self, *args, **kwargs):
+        self.serializer_class.Meta.fields = ['id','event_name']
+        return super().get_serializer(*args, **kwargs)
