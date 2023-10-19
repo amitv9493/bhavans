@@ -32,9 +32,9 @@ class RegistrationAdmin(admin.ModelAdmin):
         "shirt_size",
         "firm_name",
         "date_created",
-        'date',
-        'voucher_no',
-        'barcode',
+        "date",
+        "voucher_no",
+        "barcode",
     )
     list_filter = (
         "dob",
@@ -55,6 +55,7 @@ class GuestAdmin(admin.ModelAdmin):
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ["registration", "payment_date"]
     list_filter = ["registration"]
+    list_per_page = 20
 
 
 @admin.register(Reference)
