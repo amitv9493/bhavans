@@ -2,6 +2,8 @@ from django.contrib import admin
 
 from .models import *
 
+from django.utils.html import format_html
+
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
@@ -53,7 +55,17 @@ class GuestAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ["registration", "payment_date"]
+    def my_receipt(self, obj):
+        try:
+            return format_html(
+                '<img src="{}" style="max-width:200px; max-height:200px"/>'.format(
+                    obj.receipt.url
+                )
+            )
+        except ValueError:
+            return
+
+    list_display = ["registration", "my_receipt", "payment_date"]
     list_filter = ["registration"]
     list_per_page = 20
 
