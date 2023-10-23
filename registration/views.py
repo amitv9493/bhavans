@@ -20,6 +20,8 @@ from django.db.models import Sum
 from django.db.models.functions import Concat
 from django.db.models import F, Value
 from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+
 rz = RazorpayClient()
 
 
@@ -45,11 +47,12 @@ def getOrderCreated(request):
 class RegistrationModelViewSet(ModelViewSet):
     permission_classes = []
     authentication_classes = []
-    filter_backends = [OrderingFilter, SearchFilter]
+    filter_backends = [OrderingFilter, SearchFilter, DjangoFilterBackend]
     filterset_fields = [
         "passing_school",
+        "email",
     ]
-    search_fields = ["first_name", "last_name"]
+    search_fields = ["first_name", "last_name","email"]
 
     ordering = ["-date_created"]
     queryset = Registration.objects.all()
@@ -302,20 +305,25 @@ class payment(ListAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
 
+
 from django.db.models.functions import Concat
 
 from django.db.models import F, Value
+
+
 class payment(ListAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
 
+
 @api_view(["GET"])
 def UserView(request, year):
-    queryset = Registration.objects.filter(passing_school=year).annotate(
-        full_name = Concat(F('first_name'),
-                           Value(' '),
-                           F('last_name'))).values("full_name","passing_school","country")
-    
+    queryset = (
+        Registration.objects.filter(passing_school=year)
+        .annotate(full_name=Concat(F("first_name"), Value(" "), F("last_name")))
+        .values("full_name", "passing_school", "country")
+    )
+
     return Response(queryset, status=status.HTTP_200_OK)
 
 
@@ -323,131 +331,133 @@ class payment(generics.ListCreateAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
 
-@api_view(["GET"])
-def UserView(request, year):
-    queryset = Registration.objects.filter(passing_school=year).annotate(
-        full_name = Concat(F('first_name'),
-                           Value(' '),
-                           F('last_name'))).values("full_name","passing_school","country")
-    
-    return Response(queryset, status=status.HTTP_200_OK)
 
 @api_view(["GET"])
 def UserView(request, year):
-    queryset = Registration.objects.filter(passing_school=year).annotate(
-        full_name = Concat(F('first_name'),
-                           Value(' '),
-                           F('last_name'))).values("full_name","passing_school")
-    
+    queryset = (
+        Registration.objects.filter(passing_school=year)
+        .annotate(full_name=Concat(F("first_name"), Value(" "), F("last_name")))
+        .values("full_name", "passing_school", "country")
+    )
+
     return Response(queryset, status=status.HTTP_200_OK)
-    
+
+
+@api_view(["GET"])
+def UserView(request, year):
+    queryset = (
+        Registration.objects.filter(passing_school=year)
+        .annotate(full_name=Concat(F("first_name"), Value(" "), F("last_name")))
+        .values("full_name", "passing_school")
+    )
+
+    return Response(queryset, status=status.HTTP_200_OK)
+
+
 ################################################################
 
 from rest_framework import generics
+
+
 class RegistrationNewView(generics.CreateAPIView):
     serializer_class = RegistrationSerializer
     permission_classes = []
     authentication_classes = []
     queryset = Registration.objects.all()
-    
-    
 
-        
+
 class RegistrationPatchView(generics.RetrieveUpdateAPIView):
     serializer_class = RegistrationSerializer
     permission_classes = []
     authentication_classes = []
     queryset = Registration.objects.all()
-    
 
 
 class PaymentReceiptView(APIView):
-    
     def post(self, request, format=None):
         serializer = CustomPaymentSerializer(data=request.data)
-        
+
         if serializer.is_valid(raise_exception=True):
-            created_instances  = serializer.save()
+            created_instances = serializer.save()
             serialized_data = PaymentSerializer(created_instances, many=True).data
             response_data = {
-                'message': 'Payment(s) created successfully',
-                'data': serialized_data  # Include the serialized Payment instances
+                "message": "Payment(s) created successfully",
+                "data": serialized_data,  # Include the serialized Payment instances
             }
             return Response(response_data, status=status.HTTP_201_CREATED)
-        
+
 
 from django.db.models import Count
+
+
 class PaymentRetrieveView(APIView):
-    
     def get(self, request, pk, format=None):
         try:
-            queryset = Payment.objects.filter(registration=pk).annotate(total=Count("id"))
+            queryset = Payment.objects.filter(registration=pk).annotate(
+                total=Count("id")
+            )
         except Payment.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
         serializer = PaymentRetrieveSerializer(queryset, many=True)
         data = {
-          "total": queryset.count(),
-          "Payment_details": serializer.data,
+            "total": queryset.count(),
+            "Payment_details": serializer.data,
         }
-        return Response(
-            
-            data, status=status.HTTP_200_OK)
-        
+        return Response(data, status=status.HTTP_200_OK)
+
 
 @api_view(["POST"])
 def PaymentIndividualView(request):
     def perform_create():
         if serializer.validated_data["event"].event_name == "Life Time Membership":
-            
-            serializer.save(tag ="life time membership")
-        
+            serializer.save(tag="life time membership")
+
         elif serializer.validated_data["event"].event_name == "Ex Bhavanites Reunion":
-            serializer.save(tag ="ex bhavanites reunion")
-            
+            serializer.save(tag="ex bhavanites reunion")
+
         elif serializer.validated_data["event"].event_name == "Second Day Function":
-            serializer.save(tag ="second day function")
-            
+            serializer.save(tag="second day function")
+
         elif serializer.validated_data["event"].event_name == "First Day Full Function":
-            serializer.save(tag ="first day full function")
-            
+            serializer.save(tag="first day full function")
+
         elif serializer.validated_data["event"].event_name == "Gala Dinner":
-            serializer.save(tag ="gala dinner")
-            
+            serializer.save(tag="gala dinner")
+
         elif serializer.validated_data["event"].event_name == "Guest Reunion":
-            serializer.save(tag ="guest reunion")
-            
+            serializer.save(tag="guest reunion")
+
     try:
         payment_instance = Payment.objects.get(
-            registration = request.data.get("registration"),
-            event = request.data.get("event")
-            )
+            registration=request.data.get("registration"),
+            event=request.data.get("event"),
+        )
     except:
         payment_instance = None
-    
+
     if payment_instance:
-        serializer = PaymentSerializer(payment_instance, data=request.data, partial=True)
-        
+        serializer = PaymentSerializer(
+            payment_instance, data=request.data, partial=True
+        )
+
         if serializer.is_valid(raise_exception=True):
             perform_create()
             return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     else:
         serializer = PaymentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             perform_create()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-         
 
-            
-            
+
 class EventView(generics.ListAPIView):
     permission_classes = []
     authentication_classes = []
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    
+
     def get_serializer(self, *args, **kwargs):
-        self.serializer_class.Meta.fields = ['id','event_name']
+        self.serializer_class.Meta.fields = ["id", "event_name"]
         return super().get_serializer(*args, **kwargs)
