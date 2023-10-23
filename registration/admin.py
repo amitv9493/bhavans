@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import *
 
 from django.utils.html import format_html
+from import_export.admin import ImportExportModelAdmin
 
 
 @admin.register(Event)
@@ -11,7 +12,7 @@ class EventAdmin(admin.ModelAdmin):
 
 
 @admin.register(Registration)
-class RegistrationAdmin(admin.ModelAdmin):
+class RegistrationAdmin(ImportExportModelAdmin):
     list_display = (
         "id",
         "first_name",

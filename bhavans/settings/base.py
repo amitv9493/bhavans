@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "registration.apps.RegistrationConfig",
     "rest_framework",
     "corsheaders",
+    "import_export",
 ]
 
 MIDDLEWARE = [
@@ -112,10 +113,8 @@ JAZZMIN_SETTINGS = {
     "site_logo": "logo.jpeg",
     "copyright": "AnantSoft",
     "site_title": "Baa Admin",
-
     # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_header": "Baa",
-
     # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_brand": "Baa",
 }

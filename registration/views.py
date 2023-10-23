@@ -52,7 +52,7 @@ class RegistrationModelViewSet(ModelViewSet):
         "passing_school",
         "email",
     ]
-    search_fields = ["first_name", "last_name","email"]
+    search_fields = ["first_name", "last_name", "email", "mobile"]
 
     ordering = ["-date_created"]
     queryset = Registration.objects.all()
