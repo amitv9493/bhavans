@@ -45,6 +45,8 @@ class RegistrationAdmin(ImportExportModelAdmin):
         "date_created",
     )
 
+    search_fields = ("first_name", "last_name", "email", "mobile")
+
 
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
@@ -65,7 +67,7 @@ class PaymentAdmin(admin.ModelAdmin):
         except ValueError:
             return
 
-    search_fields = ()
+    search_fields = ("registration__first_name", "registration__last_name")
     list_display = ["registration", "my_receipt", "payment_date"]
     list_filter = ["registration", "payment_date", "event__event_name"]
     list_per_page = 20

@@ -354,8 +354,6 @@ def UserView(request, year):
 
 ################################################################
 
-from rest_framework import generics
-
 
 class RegistrationNewView(generics.CreateAPIView):
     serializer_class = RegistrationSerializer
