@@ -1,11 +1,11 @@
-from collections.abc import Iterable
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.dispatch import receiver
-from django.db.models.signals import post_save
+import datetime
+
 import qrcode
 from django.core.files import File
-import datetime
+from django.db import models
+from django.db.models.signals import post_delete, post_save
+from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
@@ -44,7 +44,6 @@ class Registration(models.Model):
     last_name = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=254, null=True, blank=True)
     dob = models.DateField(null=True, blank=True)
-   
 
     # Address info
     address = models.TextField(null=True, blank=True)
@@ -88,7 +87,7 @@ class Registration(models.Model):
     firmSite = models.CharField(_("Firm Site"), max_length=50, null=True, blank=True)
 
     image = models.ImageField(upload_to="media", null=True, blank=True)
-    
+
     date_created = models.DateTimeField(auto_now_add=True)
     date = models.DateField(null=True, blank=True)
     voucher_no = models.CharField(max_length=100, null=True, blank=True)
@@ -98,24 +97,25 @@ class Registration(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-        
-#####################################################################        
+#####################################################################
+
 
 @receiver(post_save, sender=Registration)
-
-def save_qr_code(sender, created , instance, **kwargs):
+def save_qr_code(sender, created, instance, **kwargs):
     if created:
         # number =instance.phone_number
         code = qrcode.make()
         code.save("code.png")
 
-        with open("code.png", 'rb') as file:
+        with open("code.png", "rb") as file:
             image = File(file)
             # {instance.phone_number}
-            instance.barcode.save(f'{instance}.png', image)
+            instance.barcode.save(f"{instance}.png", image)
             instance.save()
-            
+
+
 #####################################################################
+
 
 class Guest(models.Model):
     name = models.CharField(max_length=255)
@@ -140,23 +140,39 @@ class Payment(models.Model):
     event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True)
     payment_date = models.DateTimeField(auto_now_add=True)
     receipt = models.FileField(upload_to="media", null=True, blank=True)
-    transaction_id = models.CharField(max_length=100,default="")
-    tag = models.CharField(max_length=100,default="")
+    transaction_id = models.CharField(max_length=100, default="")
+    tag = models.CharField(max_length=100, default="")
 
     def __str__(self):
-        return (f"{self.registration} {self.transaction_id}")
-    
-    def save(self, *args, **kwargs) -> None:            
+        return f"{self.registration} {self.transaction_id}"
+
+    def save(self, *args, **kwargs) -> None:
         super().save(*args, **kwargs)
         if (self.tag) == "ex bhavanites reunion":
             self.registration.attend_reunion = True
             self.registration.save(update_fields=["attend_reunion"])
-            
+
     class Meta:
-    #     constraints = ["unique_together = (registration, event)"]
+        #     constraints = ["unique_together = (registration, event)"]
         constraints = [
-        models.UniqueConstraint(fields=['registration', 'event'], name="reg-event")
+            models.UniqueConstraint(fields=["registration", "event"], name="reg-event")
         ]
+
+
+@receiver(post_delete, sender=Payment)
+def update_registration_post_delete(sender, instance, **kwargs):
+    if "reunion" in instance.event.event_name.lower().split(" "):
+        instance.registration.attend_reunion = None
+        instance.registration.save(update_fields=["attend_reunion"])
+
+
+@receiver(post_save, sender=Payment)
+def update_registration_post_save(sender, instance, **kwargs):
+    if "reunion" in instance.event.event_name.lower().split(" "):
+        instance.registration.attend_reunion = True
+        instance.registration.save(update_fields=["attend_reunion"])
+
+
 class Reference(models.Model):
     registration = models.ForeignKey(
         Registration, verbose_name="Reffered By", on_delete=models.CASCADE
