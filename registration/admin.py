@@ -2,13 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
 
-from .models import (
-    Event,
-    Guest,
-    Payment,
-    Reference,
-    Registration,
-)
+from .models import Event, Guest, Payment, Reference, Registration
 
 
 @admin.register(Event)
@@ -71,8 +65,9 @@ class PaymentAdmin(admin.ModelAdmin):
         except ValueError:
             return
 
+    search_fields = ()
     list_display = ["registration", "my_receipt", "payment_date"]
-    list_filter = ["registration"]
+    list_filter = ["registration", "payment_date", "event__event_name"]
     list_per_page = 20
     exclude = ("tag",)
 
