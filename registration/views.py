@@ -1,26 +1,25 @@
+import datetime
+
+from django.db.models import F, Sum, Value
+from django.db.models.functions import Concat
 from django.shortcuts import render
-from rest_framework.viewsets import ModelViewSet
-from registration.models import *
-from .serializers import *
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-import datetime
-from rest_framework.serializers import ValidationError
-from rest_framework import status
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework import status
-from payment.main import RazorpayClient
-from .signals import *
-from django.db.models import Sum
-from django.db.models.functions import Concat
-from django.db.models import F, Value
-from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, status
+from rest_framework.decorators import api_view
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+from rest_framework.response import Response
+from rest_framework.serializers import ValidationError
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+
+from payment.main import RazorpayClient
+from registration.models import *
+
+from .serializers import *
+from .signals import *
 
 rz = RazorpayClient()
 
@@ -111,7 +110,7 @@ class RegistrationModelViewSet(ModelViewSet):
             try:
                 payment_amt = int(request.data.get("payment_amt"))
                 print(payment_amt)
-            except Exception as e:
+            except Exception:
                 raise ValidationError(
                     {
                         "msg": "There is some issue with the payment_amt data. check the key and type"
@@ -306,9 +305,8 @@ class payment(ListAPIView):
     queryset = Payment.objects.all()
 
 
-from django.db.models.functions import Concat
-
 from django.db.models import F, Value
+from django.db.models.functions import Concat
 
 
 class payment(ListAPIView):
@@ -348,7 +346,7 @@ def UserView(request, year):
     queryset = (
         Registration.objects.filter(passing_school=year)
         .annotate(full_name=Concat(F("first_name"), Value(" "), F("last_name")))
-        .values("full_name", "passing_school")
+        .values("full_name", "passing_school", "country")
     )
 
     return Response(queryset, status=status.HTTP_200_OK)
