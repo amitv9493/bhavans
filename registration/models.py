@@ -5,6 +5,7 @@ from django.core.files import File
 from django.db import models
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
@@ -147,8 +148,9 @@ class Payment(models.Model):
         return f"{self.registration} {self.transaction_id}"
 
     def save(self, *args, **kwargs) -> None:
+        self.tag = slugify(self.event.event_name)
         super().save(*args, **kwargs)
-        if (self.tag) == "ex bhavanites reunion":
+        if (self.tag) == "ex-bhavanites-reunion":
             self.registration.attend_reunion = True
             self.registration.save(update_fields=["attend_reunion"])
 
@@ -163,13 +165,6 @@ class Payment(models.Model):
 def update_registration_post_delete(sender, instance, **kwargs):
     if "reunion" in instance.event.event_name.lower().split(" "):
         instance.registration.attend_reunion = None
-        instance.registration.save(update_fields=["attend_reunion"])
-
-
-@receiver(post_save, sender=Payment)
-def update_registration_post_save(sender, instance, **kwargs):
-    if "reunion" in instance.event.event_name.lower().split(" "):
-        instance.registration.attend_reunion = True
         instance.registration.save(update_fields=["attend_reunion"])
 
 
