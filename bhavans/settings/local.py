@@ -1,7 +1,8 @@
-from .base import *
 import os
 
-DEBUG = True
+from .base import *
+
+DEBUG = False
 
 DATABASES = {
     "default": {
@@ -31,13 +32,6 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 # EMAIL_PORT = os.environ.get("EMAIL_PORT")
 EMAIL_USE_TLS = True
-
-
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "baavadodara251@gmail.com"
-EMAIL_HOST_PASSWORD = "exgkzdmlzuftgqcz"
-EMAIL_PORT = 587
-EMAIL_POST_SSL = 465
 
 
 STATIC_URL = "/static/"

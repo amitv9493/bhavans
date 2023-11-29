@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -118,3 +118,14 @@ JAZZMIN_SETTINGS = {
     # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_brand": "Baa",
 }
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = "bhavansalumniassociation.org"
+# EMAIL_PORT = 465
+# EMAIL_HOST_USER = "noreply@bhavansalumniassociation.org"
+# EMAIL_HOST_PASSWORD = "Z]hE%oII4;dc"
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "baavadodara251@gmail.com"
+EMAIL_HOST_PASSWORD = "exgkzdmlzuftgqcz"
+EMAIL_PORT = 587
+EMAIL_POST_SSL = 465

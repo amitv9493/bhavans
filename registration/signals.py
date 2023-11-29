@@ -1,17 +1,15 @@
-from django.db.models.signals import post_save, m2m_changed
-from django.dispatch import receiver
-from django.core.mail import EmailMultiAlternatives
-from .models import Registration, Event, Payment
-from django.conf import settings
-from django.template.loader import render_to_string, get_template
-from django.conf import settings
-from django.db import transaction
 from io import BytesIO
+
 import xhtml2pdf.pisa as pisa
 from django.conf import settings
 from django.core.files import File
+from django.core.mail import EmailMultiAlternatives
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template.loader import get_template, render_to_string
+from django.utils.html import strip_tags
 
-from django.core.exceptions import ValidationError
+from .models import Payment
 
 
 # @receiver(post_save, sender=Registration)
@@ -62,3 +60,27 @@ def send_email_on_save(instance, created, *args, **kwargs):
 
     email.attach(filename, pdf, "application/pdf")
     # email.send(fail_silently=False)
+
+
+@receiver(post_save, sender=Payment)
+def send_email_on_payment_receipt_upload(instance, created, *args, **kwargs):
+    if created:
+        from_email, to = settings.EMAIL_HOST_USER, instance.registration.email
+        context = {
+            "event_name": instance.event.event_name,
+            "trans_id": instance.transaction_id,
+            "amount": instance.event.amount,
+            "image_url": instance.receipt.url,
+        }
+        html_message = render_to_string("registration/payment.html", context=context)
+        plain_message = strip_tags(html_message)
+
+        message = EmailMultiAlternatives(
+            subject="Thanks for the Payment",
+            body=plain_message,
+            from_email=from_email,
+            to=[to],
+        )
+
+        message.attach_alternative(html_message, "text/html")
+        message.send()
