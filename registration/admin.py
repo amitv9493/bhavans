@@ -56,7 +56,7 @@ class GuestAdmin(admin.ModelAdmin):
 
 
 @admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
+class PaymentAdmin(ImportExportModelAdmin):
     def my_receipt(self, obj):
         try:
             return format_html(
