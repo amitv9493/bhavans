@@ -1,8 +1,26 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 from .models import Event, Guest, Payment, Reference, Registration
+
+
+class PaymentResource(resources.ModelResource):
+    class Meta:
+        model = Payment
+        fields = (
+            "registration",
+            "event",
+            "payment_date",
+            "transaction_id",
+        )
+
+    def dehydrate_registration(self, payment):
+        return str(payment.registration)
+
+    def dehydrate_event(self, payment):
+        return str(payment.event)
 
 
 @admin.register(Event)
@@ -57,6 +75,8 @@ class GuestAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(ImportExportModelAdmin):
+    resource_class = PaymentResource
+
     def my_receipt(self, obj):
         try:
             return format_html(
