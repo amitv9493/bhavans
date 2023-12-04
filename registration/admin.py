@@ -10,6 +10,7 @@ class ExportResource(resources.ModelResource):
     class Meta:
         model = Payment
         fields = (
+            "id",
             "registration",
             "event",
             "payment_date",
