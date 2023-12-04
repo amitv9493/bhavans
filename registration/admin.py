@@ -6,7 +6,7 @@ from import_export.admin import ImportExportModelAdmin
 from .models import Event, Guest, Payment, Reference, Registration
 
 
-class PaymentResource(resources.ModelResource):
+class ExportResource(resources.ModelResource):
     class Meta:
         model = Payment
         fields = (
@@ -21,6 +21,12 @@ class PaymentResource(resources.ModelResource):
 
     def dehydrate_event(self, payment):
         return str(payment.event)
+
+
+class ImportResourse(resources.ModelResource):
+    class Meta:
+        fields = "__all__"
+        model = Payment
 
 
 @admin.register(Event)
@@ -75,7 +81,7 @@ class GuestAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(ImportExportModelAdmin):
-    resource_class = PaymentResource
+    resource_classes = [ImportResourse, ExportResource]
 
     def my_receipt(self, obj):
         try:
