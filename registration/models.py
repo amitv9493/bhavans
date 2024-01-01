@@ -41,6 +41,7 @@ class Registration(models.Model):
         option6 = "2XL", "2XL"
         option7 = "3XL", "3XL"
 
+    id = models.CharField(max_length=100, primary_key=True)
     first_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=254, null=True, blank=True)

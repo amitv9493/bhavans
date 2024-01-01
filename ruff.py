@@ -1,35 +1,30 @@
-# import requests
+import csv
 
-# def get_token(username, password):
-
-#     endpoint = "https://smhri.com/oeccrm/api/user/login/"
-
-#     request = requests.post(endpoint, data={"username":username, "password":password})
-
-#     if request.status_code == 200:
-#         print(type(request.status_code))
-#         return request.json()
-#     else:
-#         raise Exception
+from registration.models import Registration
 
 
-# print(get_token('fly', 'anant@123'))
-# import pickle
+def main():
+    with open("Baa-Registration.csv", "r") as file:
+        reader = csv.reader(file)
+        list_of_object = []
+        for row in reader:
+            list_of_object.append(
+                Registration(
+                    id=row[0],
+                    first_name=row[1],
+                    last_name=row[2],
+                )
+            )
+        Registration.objects.bulk_create(list_of_object)
 
-# with open("fly.pkl", 'rb') as file:
-#     name = pickle.load(file)
+        # print(
+        #     type(row[0]),
+        #     type(row[1]),
+        #     type(row[2]),
+        # )
+        # print(row[0], row[1], row[2], row[3], row[4], row[5], row[6], sep="|) ")
 
-# print((name['token']['access']))
-# import pickle
-# import os
-# print(os.access("fly.pkl", mode=1))
 
-# # os.remove()
-
-# data = [
-#     {1:2},
-#     {2:3},
-# ]
-# FF
-
-#
+# The `main()` function is responsible for reading data from a CSV file named "Baa-Registration.csv"
+# and creating `Registration` objects in the database using the data from the CSV file.
+# main()
