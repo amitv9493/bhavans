@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.utils.html import format_html
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -84,18 +83,18 @@ class GuestAdmin(admin.ModelAdmin):
 class PaymentAdmin(ImportExportModelAdmin):
     resource_classes = [ImportResourse, ExportResource]
 
-    def my_receipt(self, obj):
-        try:
-            return format_html(
-                '<img src="{}" style="max-width:200px; max-height:200px"/>'.format(
-                    obj.receipt.url
-                )
-            )
-        except ValueError:
-            return
+    # def my_receipt(self, obj):
+    #     try:
+    #         return format_html(
+    #             '<img src="{}" style="max-width:200px; max-height:200px"/>'.format(
+    #                 obj.receipt.url
+    #             )
+    #         )
+    #     except ValueError:
+    #         return
 
     search_fields = ("registration__first_name", "registration__last_name")
-    list_display = ["registration", "my_receipt", "payment_date"]
+    list_display = ["registration", "receipt", "payment_date"]
     list_filter = ["registration", "payment_date", "event__event_name"]
     list_per_page = 20
     exclude = ("tag",)

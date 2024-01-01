@@ -96,7 +96,7 @@ class Registration(models.Model):
     barcode = models.ImageField(upload_to="media", blank=True, null=True)
 
     def __str__(self) -> str:
-        return f"{self.first_name} {self.last_name if self.last_name else ''}"
+        return f"{self.first_name} {self.last_name if self.last_name else ''} {self.id}"
 
 
 #####################################################################
